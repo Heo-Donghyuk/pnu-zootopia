@@ -239,8 +239,7 @@
         min-height: 86px;
         opacity: 0;
         transform: translateY(10px);
-        animation: axis-card-enter 520ms cubic-bezier(0.2, 0.8, 0.2, 1)
-          forwards;
+        animation: axis-card-enter 520ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
       }
       .axis-card:nth-child(1) {
         animation-delay: 80ms;
@@ -368,8 +367,8 @@
         pointer-events: none;
         opacity: 0;
         transform: translateY(18px);
-        animation: start-area-enter 620ms cubic-bezier(0.2, 0.8, 0.2, 1)
-          420ms forwards;
+        animation: start-area-enter 620ms cubic-bezier(0.2, 0.8, 0.2, 1) 420ms
+          forwards;
       }
       .btn-start {
         width: 100%;
@@ -681,12 +680,49 @@
         margin-bottom: 10px;
         line-height: 1.1;
       }
+      .result-character-stage {
+        width: clamp(214px, 63vw, 292px);
+        height: clamp(238px, 68vw, 318px);
+        margin: 6px auto 16px;
+        border-radius: 50%;
+        background:
+          radial-gradient(
+            ellipse at 50% 46%,
+            rgba(225, 245, 238, 0.86) 0%,
+            rgba(225, 245, 238, 0.58) 42%,
+            rgba(225, 245, 238, 0) 72%
+          ),
+          radial-gradient(
+            ellipse at 50% 85%,
+            rgba(203, 221, 176, 0.58) 0%,
+            rgba(203, 221, 176, 0.24) 38%,
+            rgba(203, 221, 176, 0) 70%
+          );
+        position: relative;
+      }
+      .result-character-stage::before {
+        content: "";
+        position: absolute;
+        left: 17%;
+        right: 17%;
+        bottom: 26px;
+        height: 18px;
+        border-radius: 50%;
+        background: rgba(15, 110, 86, 0.08);
+        filter: blur(10px);
+      }
+      .result-character-stage::after {
+        content: none;
+      }
       .result-character {
-        width: clamp(150px, 44vw, 203px);
-        height: clamp(195px, 57vw, 255px);
+        width: clamp(160px, 47vw, 216px);
+        height: clamp(208px, 61vw, 272px);
         object-fit: contain;
         display: block;
-        margin: 4px auto 12px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+        transform: translateY(8px);
       }
       .type-name {
         font-size: clamp(17px, 4.8vw, 20px);
@@ -948,7 +984,7 @@
             alt="PNU Zootopia"
           />
           <div class="badge">
-            2026 주토피아 · 부산대학교 동물생명자원과학과 꿈그린 학습동아리
+            부산대학교 동물생명자원과학과 꿈그린 학습동아리 · 주토피아
           </div>
           <h1>축산 <span class="accent">FARM</span> 유형 테스트</h1>
           <p>
@@ -1043,25 +1079,29 @@
         <div class="result-header">
           <div class="res-label">나의 FARM 유형은</div>
           <div class="type-badge" id="res-type"></div>
-          <img
-            class="result-character"
-            id="res-character"
-            src="characters/FATN.webp"
-            alt=""
-          />
+          <div class="result-character-stage">
+            <img
+              class="result-character"
+              id="res-character"
+              src="characters/FATN.webp"
+              alt=""
+            />
+          </div>
           <div class="type-name" id="res-name"></div>
           <div class="type-desc" id="res-desc"></div>
         </div>
         <div class="axis-result-row" id="axis-bars"></div>
         <div id="rec-area"></div>
         <div class="share-note">
-          2026년 주토피아 부산대학교 동물생명자원과학과 꿈그린 학습동아리
+          부산대학교 동물생명자원과학과 꿈그린 학습동아리 · 주토피아
         </div>
         <div class="result-actions">
           <button class="share-btn" onclick="shareTest()">
             친구에게 공유하기
           </button>
-          <button class="retry-btn" onclick="restart()">↺ 다시 테스트하기</button>
+          <button class="retry-btn" onclick="restart()">
+            ↺ 다시 테스트하기
+          </button>
         </div>
       </section>
     </div>
