@@ -574,6 +574,29 @@ button { font-family: inherit; -webkit-tap-highlight-color: transparent; }
   color: var(--text-secondary);
   margin: 1.25rem 0;
 }
+.share-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  min-height: 50px;
+  font-family: inherit;
+  box-shadow: 0 5px 16px var(--brand-shadow);
+  transition: transform 0.1s, box-shadow 0.2s, filter 0.2s;
+  margin-bottom: 10px;
+}
+@media (hover: hover) {
+  .share-btn:hover {
+    filter: brightness(1.02);
+    box-shadow: 0 8px 22px var(--brand-shadow-lg);
+  }
+}
+.share-btn:active { transform: scale(0.98); }
 .retry-btn {
   width: 100%;
   padding: 14px;
@@ -646,6 +669,7 @@ button { font-family: inherit; -webkit-tap-highlight-color: transparent; }
     <div class="axis-result-row" id="axis-bars"></div>
     <div id="rec-area"></div>
     <div class="share-note">2026년 주토피아 부산대학교 동물생명자원과학과 꿈그린 학습동아리</div>
+    <button class="share-btn" onclick="shareTest()">친구에게 공유하기</button>
     <button class="retry-btn" onclick="restart()">↺ 다시 테스트하기</button>
   </section>
 
@@ -860,6 +884,32 @@ function showResult() {
     </div>`;
 
   showSection('result-section');
+}
+
+async function shareTest() {
+  const shareUrl = 'https://m.site.naver.com/288A7';
+  const shareData = {
+    title: '축산 FARM 유형 테스트',
+    text: '나는 어떤 농업인/연구자 스타일일까?',
+    url: shareUrl,
+  };
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+      return;
+    } catch (err) {
+      if (err && err.name === 'AbortError') return;
+    }
+  }
+
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(shareUrl);
+    alert('공유 링크가 복사됐어요.');
+    return;
+  }
+
+  window.prompt('공유 링크를 복사해주세요.', shareUrl);
 }
 
 function restart() {
