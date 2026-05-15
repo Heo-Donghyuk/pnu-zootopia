@@ -878,7 +878,16 @@ function fireConfetti() {
   window.confetti({ ...defaults, origin: { x: 0.75, y: 0.22 }, angle: 120 });
 }
 
-function showResult() {
+function preloadImage(src) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = src;
+  });
+}
+
+async function showResult() {
   const scores = { F: 0, R: 0, A: 0, P: 0, T: 0, I: 0, N: 0, C: 0 };
   questions.forEach((q, i) => {
     const opt = answers[i];
@@ -897,9 +906,9 @@ function showResult() {
   const m = nScore >= cScore ? 'N' : 'C';
   const typeKey = f + a + r + m;
   const type = typeData[typeKey];
+  const characterSrc = `characters/${typeKey}.webp`;
 
   document.getElementById('res-type').textContent = typeKey;
-  document.getElementById('res-character').src = `characters/${typeKey}.webp`;
   document.getElementById('res-character').alt = type.name + ' 캐릭터';
   document.getElementById('res-name').textContent = type.name;
   document.getElementById('res-desc').textContent = type.desc;
@@ -949,6 +958,8 @@ function showResult() {
       <div class="rec-item">${renderLinks(type.companies)}</div>
     </div>`;
 
+  await preloadImage(characterSrc);
+  document.getElementById('res-character').src = characterSrc;
   showSection('result-section');
   setTimeout(fireConfetti, 180);
 }
