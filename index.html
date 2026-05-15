@@ -14,6 +14,7 @@
 <meta name="twitter:title" content="축산 FARM 유형 테스트">
 <meta name="twitter:description" content="나는 어떤 농업인/연구자 스타일일까?">
 <title>축산 FARM 유형 테스트</title>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
 <style>
 /* === 디자인 토큰 === */
 :root {
@@ -464,50 +465,76 @@ button { font-family: inherit; -webkit-tap-highlight-color: transparent; }
 }
 
 .axis-result-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   margin: clamp(1.25rem, 4vw, 1.75rem) 0;
-}
-.axis-result {
   background: var(--bg-primary);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.axis-result {
+  padding: 18px 16px;
+}
+.axis-result + .axis-result {
+  border-top: 1px solid var(--border-light);
 }
 .axis-result-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  gap: 6px;
+  text-align: center;
+  margin-bottom: 14px;
 }
 .axis-result-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.axis-result-val {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--brand-dark);
+  color: var(--text-primary);
+  letter-spacing: 0;
+}
+.axis-score-row {
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.axis-pct {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-muted);
   white-space: nowrap;
 }
+.axis-pct.right { text-align: right; }
+.axis-pct.active { color: var(--brand-dark); }
 .axis-bar-wrap {
-  height: 6px;
-  background: var(--border-light);
+  height: 10px;
+  background: #f0f1ef;
   border-radius: var(--radius-pill);
   overflow: hidden;
+  position: relative;
 }
 .axis-bar {
+  position: absolute;
+  top: 0;
   height: 100%;
-  background: linear-gradient(90deg, var(--brand) 0%, var(--brand-dark) 100%);
+  background: var(--brand);
   border-radius: var(--radius-pill);
 }
+.axis-bar.left { left: 0; }
+.axis-bar.right { right: 0; }
+.axis-label-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.axis-side-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  word-break: keep-all;
+}
+.axis-side-label.right { text-align: right; }
+.axis-side-label.active { color: var(--brand-dark); }
 
 .rec-card {
   background: var(--bg-primary);
@@ -767,7 +794,6 @@ function render() {
           <div class="opt-letter">A</div>
           <div class="opt-body">
             <div class="opt-text">${q.a.text}</div>
-            <div class="opt-label">${q.a.label}</div>
           </div>
           <div class="opt-arrow">→</div>
         </div>
@@ -775,7 +801,6 @@ function render() {
           <div class="opt-letter">B</div>
           <div class="opt-body">
             <div class="opt-text">${q.b.text}</div>
-            <div class="opt-label">${q.b.label}</div>
           </div>
           <div class="opt-arrow">→</div>
         </div>
@@ -829,6 +854,22 @@ function renderLinks(items) {
     </a>`).join('');
 }
 
+function fireConfetti() {
+  if (!window.confetti) return;
+
+  const defaults = {
+    particleCount: 70,
+    spread: 58,
+    startVelocity: 34,
+    ticks: 150,
+    scalar: 0.9,
+    colors: ['#1D9E75', '#0F6E56', '#F2B84B', '#E8893D', '#ffffff'],
+  };
+
+  window.confetti({ ...defaults, origin: { x: 0.25, y: 0.22 }, angle: 60 });
+  window.confetti({ ...defaults, origin: { x: 0.75, y: 0.22 }, angle: 120 });
+}
+
 function showResult() {
   const scores = { F: 0, R: 0, A: 0, P: 0, T: 0, I: 0, N: 0, C: 0 };
   questions.forEach((q, i) => {
@@ -854,19 +895,34 @@ function showResult() {
   document.getElementById('res-desc').textContent = type.desc;
 
   const axisInfo = [
-    { label: 'F · 집중', val: fScore, total: fScore + rScore, pick: f === 'F' ? 'Field' : 'Research' },
-    { label: 'A · 친화', val: aScore, total: aScore + pScore, pick: a === 'A' ? 'Animal' : 'Product' },
-    { label: 'R · 관계', val: tScore, total: tScore + iScore, pick: r === 'T' ? 'Team' : 'Indep.' },
-    { label: 'M · 사고', val: nScore, total: nScore + cScore, pick: m === 'N' ? 'Innovative' : 'Classic' },
-  ];
+    { label: '집중방식', leftVal: fScore, rightVal: rScore, leftLabel: 'Field 현장형', rightLabel: 'Research 연구형' },
+    { label: '친화대상', leftVal: aScore, rightVal: pScore, leftLabel: 'Animal 생명형', rightLabel: 'Product 산업형' },
+    { label: '관계방식', leftVal: tScore, rightVal: iScore, leftLabel: 'Team 협력형', rightLabel: 'Independent 독립형' },
+    { label: '사고방식', leftVal: nScore, rightVal: cScore, leftLabel: 'Innovative 혁신형', rightLabel: 'Classic 전통형' },
+  ].map(ax => {
+    const total = ax.leftVal + ax.rightVal;
+    const leftPct = Math.round((ax.leftVal / total) * 100);
+    const rightPct = 100 - leftPct;
+    const activeSide = leftPct >= rightPct ? 'left' : 'right';
+    return { ...ax, leftPct, rightPct, activeSide };
+  });
 
   document.getElementById('axis-bars').innerHTML = axisInfo.map(ax => `
     <div class="axis-result">
       <div class="axis-result-top">
         <div class="axis-result-label">${ax.label}</div>
-        <div class="axis-result-val">${ax.pick}</div>
       </div>
-      <div class="axis-bar-wrap"><div class="axis-bar" style="width:${Math.round(ax.val/ax.total*100)}%"></div></div>
+      <div class="axis-score-row">
+        <div class="axis-pct left${ax.activeSide === 'left' ? ' active' : ''}">${ax.leftPct}%</div>
+        <div class="axis-bar-wrap">
+          <div class="axis-bar ${ax.activeSide}" style="width:${ax.activeSide === 'left' ? ax.leftPct : ax.rightPct}%"></div>
+        </div>
+        <div class="axis-pct right${ax.activeSide === 'right' ? ' active' : ''}">${ax.rightPct}%</div>
+      </div>
+      <div class="axis-label-row">
+        <div class="axis-side-label left${ax.activeSide === 'left' ? ' active' : ''}">${ax.leftLabel}</div>
+        <div class="axis-side-label right${ax.activeSide === 'right' ? ' active' : ''}">${ax.rightLabel}</div>
+      </div>
     </div>`).join('');
 
   document.getElementById('rec-area').innerHTML = `
@@ -884,6 +940,7 @@ function showResult() {
     </div>`;
 
   showSection('result-section');
+  setTimeout(fireConfetti, 180);
 }
 
 async function shareTest() {
