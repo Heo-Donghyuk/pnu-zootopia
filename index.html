@@ -449,6 +449,13 @@ button { font-family: inherit; -webkit-tap-highlight-color: transparent; }
   margin-bottom: 10px;
   line-height: 1.1;
 }
+.result-character {
+  width: clamp(150px, 44vw, 203px);
+  height: clamp(195px, 57vw, 255px);
+  object-fit: contain;
+  display: block;
+  margin: 4px auto 12px;
+}
 .type-name {
   font-size: clamp(17px, 4.8vw, 20px);
   font-weight: 700;
@@ -657,10 +664,10 @@ button { font-family: inherit; -webkit-tap-highlight-color: transparent; }
       <p>나는 어떤 농업인/연구자 스타일일까?<br>12개 질문으로 알아보는 나만의 FARM 유형</p>
     </div>
     <div class="axis-row">
-      <div class="axis-card"><div class="axis-letter">F</div><div class="axis-word">Field vs Research</div></div>
-      <div class="axis-card"><div class="axis-letter">A</div><div class="axis-word">Animal vs Product</div></div>
-      <div class="axis-card"><div class="axis-letter">R</div><div class="axis-word">Team vs Indep.</div></div>
-      <div class="axis-card"><div class="axis-letter">M</div><div class="axis-word">Innov. vs Classic</div></div>
+      <div class="axis-card"><div class="axis-letter">F</div><div class="axis-word">현장형 vs 연구형</div></div>
+      <div class="axis-card"><div class="axis-letter">A</div><div class="axis-word">생명형 vs 산업형</div></div>
+      <div class="axis-card"><div class="axis-letter">R</div><div class="axis-word">협력형 vs 독립형</div></div>
+      <div class="axis-card"><div class="axis-letter">M</div><div class="axis-word">혁신형 vs 전통형</div></div>
     </div>
     <div class="start-area">
       <button class="btn-start" onclick="startTest()">
@@ -690,6 +697,7 @@ button { font-family: inherit; -webkit-tap-highlight-color: transparent; }
     <div class="result-header">
       <div class="res-label">나의 FARM 유형은</div>
       <div class="type-badge" id="res-type"></div>
+      <img class="result-character" id="res-character" src="characters/FATN.webp" alt="">
       <div class="type-name" id="res-name"></div>
       <div class="type-desc" id="res-desc"></div>
     </div>
@@ -891,6 +899,8 @@ function showResult() {
   const type = typeData[typeKey];
 
   document.getElementById('res-type').textContent = typeKey;
+  document.getElementById('res-character').src = `characters/${typeKey}.webp`;
+  document.getElementById('res-character').alt = type.name + ' 캐릭터';
   document.getElementById('res-name').textContent = type.name;
   document.getElementById('res-desc').textContent = type.desc;
 
