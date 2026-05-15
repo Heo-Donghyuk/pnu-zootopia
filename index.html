@@ -750,6 +750,16 @@
         box-shadow: var(--shadow-sm);
         overflow: hidden;
       }
+      .axis-mode-title {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border-light);
+        background: #f8fbfa;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--brand-dark);
+        text-align: center;
+        letter-spacing: -0.01em;
+      }
       .axis-result {
         padding: 18px 16px;
       }
@@ -969,6 +979,173 @@
       .retry-btn:active {
         transform: scale(0.98);
       }
+
+      body.sheet-open {
+        overflow: hidden;
+      }
+      .sheet-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: rgba(16, 31, 27, 0.34);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+      .sheet-backdrop.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .type-sheet {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 60;
+        width: 100%;
+        max-width: 640px;
+        max-height: min(78svh, 620px);
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg-primary);
+        border-radius: 24px 24px 0 0;
+        box-shadow: 0 -16px 40px rgba(18, 52, 43, 0.18);
+        transform: translateY(105%);
+        transition: transform 0.24s ease;
+        overflow: hidden;
+      }
+      .type-sheet.open {
+        transform: translateY(0);
+      }
+      .sheet-grip {
+        width: 44px;
+        height: 5px;
+        margin: 10px auto 4px;
+        border-radius: var(--radius-pill);
+        background: #d9dfdd;
+        flex: 0 0 auto;
+      }
+      .sheet-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 18px 14px;
+        border-bottom: 1px solid var(--border-light);
+      }
+      .sheet-title {
+        font-size: 17px;
+        font-weight: 800;
+        color: var(--text-primary);
+        letter-spacing: -0.015em;
+      }
+      .sheet-close {
+        width: 36px;
+        height: 36px;
+        border: 0;
+        border-radius: 50%;
+        background: var(--bg-secondary);
+        color: var(--text-secondary);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+      }
+      .type-list {
+        overflow-y: auto;
+        padding: 10px 12px calc(14px + var(--safe-bottom));
+        -webkit-overflow-scrolling: touch;
+      }
+      .type-option {
+        width: 100%;
+        border: 0;
+        border-radius: 16px;
+        background: transparent;
+        display: grid;
+        grid-template-columns: 58px 1fr 18px;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 8px;
+        cursor: pointer;
+        text-align: left;
+        color: inherit;
+      }
+      .type-option + .type-option {
+        margin-top: 2px;
+      }
+      .type-option.active,
+      .type-option:active {
+        background: #f2f8f5;
+      }
+      @media (hover: hover) {
+        .type-option:hover {
+          background: #f2f8f5;
+        }
+      }
+      .type-thumb {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        overflow: hidden;
+        position: relative;
+        background:
+          radial-gradient(
+            ellipse at 50% 38%,
+            rgba(225, 245, 238, 0.95) 0%,
+            rgba(225, 245, 238, 0.58) 56%,
+            rgba(225, 245, 238, 0) 78%
+          ),
+          #f7fbf9;
+        flex: 0 0 auto;
+      }
+      .type-thumb img {
+        position: absolute;
+        left: 50%;
+        top: 110%;
+        width: 87px;
+        height: 123px;
+        object-fit: contain;
+        transform: translate(-50%, -50%);
+      }
+      .type-option-copy {
+        min-width: 0;
+      }
+      .type-option-top {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 2px;
+      }
+      .type-code {
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--brand-dark);
+        letter-spacing: 0.06em;
+      }
+      .type-current {
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: var(--radius-pill);
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+      }
+      .type-option-name {
+        display: block;
+        font-size: 14px;
+        font-weight: 650;
+        color: var(--text-primary);
+        line-height: 1.35;
+        word-break: keep-all;
+      }
+      .type-option-arrow {
+        color: var(--text-muted);
+        font-size: 20px;
+        line-height: 1;
+      }
     </style>
   </head>
   <body>
@@ -1077,7 +1254,7 @@
       <!-- 3. 결과 -->
       <section class="section" id="result-section">
         <div class="result-header">
-          <div class="res-label">나의 FARM 유형은</div>
+          <div class="res-label" id="res-label">나의 FARM 유형은</div>
           <div class="type-badge" id="res-type"></div>
           <div class="result-character-stage">
             <img
@@ -1096,8 +1273,8 @@
           부산대학교 동물생명자원과학과 꿈그린 학습동아리 · 주토피아
         </div>
         <div class="result-actions">
-          <button class="share-btn" onclick="shareTest()">
-            친구에게 공유하기
+          <button class="share-btn browse-btn" onclick="openTypeSheet()">
+            다른 유형 둘러보기
           </button>
           <button class="retry-btn" onclick="restart()">
             ↺ 다시 테스트하기
@@ -1105,6 +1282,30 @@
         </div>
       </section>
     </div>
+
+    <div
+      class="sheet-backdrop"
+      id="type-sheet-backdrop"
+      onclick="closeTypeSheet()"
+      aria-hidden="true"
+    ></div>
+    <aside
+      class="type-sheet"
+      id="type-sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="type-sheet-title"
+      aria-hidden="true"
+    >
+      <div class="sheet-grip" aria-hidden="true"></div>
+      <div class="sheet-head">
+        <div class="sheet-title" id="type-sheet-title">다른 유형 둘러보기</div>
+        <button class="sheet-close" type="button" onclick="closeTypeSheet()" aria-label="닫기">
+          ×
+        </button>
+      </div>
+      <div class="type-list" id="type-list"></div>
+    </aside>
 
     <script>
       const questions = [
@@ -1498,6 +1699,9 @@
       let cur = 0;
       let answers = {};
       let isAnimating = false;
+      let personalResultType = null;
+      let personalResultScores = null;
+      let currentResultType = null;
 
       function showSection(id) {
         document
@@ -1510,6 +1714,9 @@
       function startTest() {
         cur = 0;
         answers = {};
+        personalResultType = null;
+        personalResultScores = null;
+        currentResultType = null;
         showSection("test-section");
         render();
       }
@@ -1637,62 +1844,51 @@
         });
       }
 
-      async function showResult() {
+      function calculateScores() {
         const scores = { F: 0, R: 0, A: 0, P: 0, T: 0, I: 0, N: 0, C: 0 };
         questions.forEach((q, i) => {
           const opt = answers[i];
           const val = opt === "a" ? q.a.val : q.b.val;
           scores[val]++;
         });
+        return scores;
+      }
 
-        const fScore = scores.F;
-        const rScore = scores.R;
-        const aScore = scores.A;
-        const pScore = scores.P;
-        const tScore = scores.T;
-        const iScore = scores.I;
-        const nScore = scores.N;
-        const cScore = scores.C;
+      function getTypeKeyFromScores(scores) {
+        const f = scores.F >= scores.R ? "F" : "R";
+        const a = scores.A >= scores.P ? "A" : "P";
+        const r = scores.T >= scores.I ? "T" : "I";
+        const m = scores.N >= scores.C ? "N" : "C";
+        return f + a + r + m;
+      }
 
-        const f = fScore >= rScore ? "F" : "R";
-        const a = aScore >= pScore ? "A" : "P";
-        const r = tScore >= iScore ? "T" : "I";
-        const m = nScore >= cScore ? "N" : "C";
-        const typeKey = f + a + r + m;
-        const type = typeData[typeKey];
-        const characterSrc = `characters/${typeKey}.webp`;
-
-        document.getElementById("res-type").textContent = typeKey;
-        document.getElementById("res-character").alt = type.name + " 캐릭터";
-        document.getElementById("res-name").textContent = type.name;
-        document.getElementById("res-desc").textContent = type.desc;
-
-        const axisInfo = [
+      function getAxisInfoFromScores(scores) {
+        return [
           {
             label: "집중방식",
-            leftVal: fScore,
-            rightVal: rScore,
+            leftVal: scores.F,
+            rightVal: scores.R,
             leftLabel: "Field 현장형",
             rightLabel: "Research 연구형",
           },
           {
             label: "친화대상",
-            leftVal: aScore,
-            rightVal: pScore,
+            leftVal: scores.A,
+            rightVal: scores.P,
             leftLabel: "Animal 생명형",
             rightLabel: "Product 산업형",
           },
           {
             label: "관계방식",
-            leftVal: tScore,
-            rightVal: iScore,
+            leftVal: scores.T,
+            rightVal: scores.I,
             leftLabel: "Team 협력형",
             rightLabel: "Independent 독립형",
           },
           {
             label: "사고방식",
-            leftVal: nScore,
-            rightVal: cScore,
+            leftVal: scores.N,
+            rightVal: scores.C,
             leftLabel: "Innovative 혁신형",
             rightLabel: "Classic 전통형",
           },
@@ -1703,10 +1899,61 @@
           const activeSide = leftPct >= rightPct ? "left" : "right";
           return { ...ax, leftPct, rightPct, activeSide };
         });
+      }
 
-        document.getElementById("axis-bars").innerHTML = axisInfo
-          .map(
-            (ax) => `
+      function getAxisInfoFromType(typeKey) {
+        return [
+          {
+            label: "집중방식",
+            leftCode: "F",
+            rightCode: "R",
+            leftLabel: "Field 현장형",
+            rightLabel: "Research 연구형",
+          },
+          {
+            label: "친화대상",
+            leftCode: "A",
+            rightCode: "P",
+            leftLabel: "Animal 생명형",
+            rightLabel: "Product 산업형",
+          },
+          {
+            label: "관계방식",
+            leftCode: "T",
+            rightCode: "I",
+            leftLabel: "Team 협력형",
+            rightLabel: "Independent 독립형",
+          },
+          {
+            label: "사고방식",
+            leftCode: "N",
+            rightCode: "C",
+            leftLabel: "Innovative 혁신형",
+            rightLabel: "Classic 전통형",
+          },
+        ].map((ax, index) => {
+          const selectedCode = typeKey[index];
+          const activeSide = selectedCode === ax.leftCode ? "left" : "right";
+          return {
+            ...ax,
+            leftPct: activeSide === "left" ? 100 : 0,
+            rightPct: activeSide === "right" ? 100 : 0,
+            activeSide,
+          };
+        });
+      }
+
+      function renderAxisBars(axisInfo, mode) {
+        const modeTitle =
+          mode === "catalog"
+            ? '<div class="axis-mode-title">유형 성향 구성</div>'
+            : "";
+
+        return (
+          modeTitle +
+          axisInfo
+            .map(
+              (ax) => `
     <div class="axis-result">
       <div class="axis-result-top">
         <div class="axis-result-label">${ax.label}</div>
@@ -1723,10 +1970,13 @@
         <div class="axis-side-label right${ax.activeSide === "right" ? " active" : ""}">${ax.rightLabel}</div>
       </div>
     </div>`,
-          )
-          .join("");
+            )
+            .join("")
+        );
+      }
 
-        document.getElementById("rec-area").innerHTML = `
+      function renderRecommendations(type) {
+        return `
     <div class="rec-card">
       <div class="rec-title">🔬 추천 랩실</div>
       <div class="rec-item">${renderLinks(type.labs)}</div>
@@ -1739,11 +1989,114 @@
       <div class="rec-title">🏢 추천 기업·기관</div>
       <div class="rec-item">${renderLinks(type.companies)}</div>
     </div>`;
+      }
 
+      async function renderResult(typeKey, options = {}) {
+        const { scores = null, mode = "catalog", confetti = false } = options;
+        const type = typeData[typeKey];
+        if (!type) return;
+
+        const characterSrc = `characters/${typeKey}.webp`;
         await preloadImage(characterSrc);
+
+        currentResultType = typeKey;
+        document.getElementById("res-label").textContent =
+          mode === "personal" ? "나의 FARM 유형은" : "둘러보는 FARM 유형은";
+        document.getElementById("res-type").textContent = typeKey;
         document.getElementById("res-character").src = characterSrc;
+        document.getElementById("res-character").alt = type.name + " 캐릭터";
+        document.getElementById("res-name").textContent = type.name;
+        document.getElementById("res-desc").textContent = type.desc;
+
+        const axisInfo = scores
+          ? getAxisInfoFromScores(scores)
+          : getAxisInfoFromType(typeKey);
+        document.getElementById("axis-bars").innerHTML = renderAxisBars(
+          axisInfo,
+          mode,
+        );
+        document.getElementById("rec-area").innerHTML =
+          renderRecommendations(type);
+
         showSection("result-section");
-        setTimeout(fireConfetti, 180);
+        if (confetti) setTimeout(fireConfetti, 180);
+      }
+
+      async function showResult() {
+        const scores = calculateScores();
+        const typeKey = getTypeKeyFromScores(scores);
+        personalResultType = typeKey;
+        personalResultScores = { ...scores };
+
+        await renderResult(typeKey, {
+          scores,
+          mode: "personal",
+          confetti: true,
+        });
+      }
+
+      function renderTypeList() {
+        document.getElementById("type-list").innerHTML = Object.entries(
+          typeData,
+        )
+          .map(([typeKey, type]) => {
+            const badge =
+              typeKey === personalResultType
+                ? "내 결과"
+                : typeKey === currentResultType
+                  ? "현재 보기"
+                  : "";
+            return `
+    <button class="type-option${typeKey === currentResultType ? " active" : ""}" type="button" onclick="selectTypeFromSheet('${typeKey}')">
+      <span class="type-thumb">
+        <img src="characters/${typeKey}.webp" alt="" loading="lazy" />
+      </span>
+      <span class="type-option-copy">
+        <span class="type-option-top">
+          <span class="type-code">${typeKey}</span>
+          ${badge ? `<span class="type-current">${badge}</span>` : ""}
+        </span>
+        <span class="type-option-name">${type.name}</span>
+      </span>
+      <span class="type-option-arrow" aria-hidden="true">›</span>
+    </button>`;
+          })
+          .join("");
+      }
+
+      function openTypeSheet() {
+        renderTypeList();
+        document.body.classList.add("sheet-open");
+        document.getElementById("type-sheet-backdrop").classList.add("open");
+        document.getElementById("type-sheet").classList.add("open");
+        document
+          .getElementById("type-sheet-backdrop")
+          .setAttribute("aria-hidden", "false");
+        document
+          .getElementById("type-sheet")
+          .setAttribute("aria-hidden", "false");
+      }
+
+      function closeTypeSheet() {
+        document.body.classList.remove("sheet-open");
+        document.getElementById("type-sheet-backdrop").classList.remove("open");
+        document.getElementById("type-sheet").classList.remove("open");
+        document
+          .getElementById("type-sheet-backdrop")
+          .setAttribute("aria-hidden", "true");
+        document
+          .getElementById("type-sheet")
+          .setAttribute("aria-hidden", "true");
+      }
+
+      async function selectTypeFromSheet(typeKey) {
+        const isPersonalType =
+          typeKey === personalResultType && personalResultScores;
+        closeTypeSheet();
+        await renderResult(typeKey, {
+          scores: isPersonalType ? personalResultScores : null,
+          mode: isPersonalType ? "personal" : "catalog",
+        });
       }
 
       async function shareTest() {
@@ -1776,8 +2129,16 @@
         cur = 0;
         answers = {};
         isAnimating = false;
+        personalResultType = null;
+        personalResultScores = null;
+        currentResultType = null;
+        closeTypeSheet();
         showSection("landing-section");
       }
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeTypeSheet();
+      });
     </script>
   </body>
 </html>
