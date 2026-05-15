@@ -1,811 +1,1487 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-<meta name="theme-color" content="#1D9E75">
-<meta name="description" content="나는 어떤 농업인/연구자 스타일일까?">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://heo-donghyuk.github.io/pnu-zootopia/">
-<meta property="og:title" content="축산 FARM 유형 테스트">
-<meta property="og:description" content="나는 어떤 농업인/연구자 스타일일까?">
-<meta property="og:image" content="https://heo-donghyuk.github.io/pnu-zootopia/pnu-zootopia-og.png">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="축산 FARM 유형 테스트">
-<meta name="twitter:description" content="나는 어떤 농업인/연구자 스타일일까?">
-<title>축산 FARM 유형 테스트</title>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
-<style>
-/* === 디자인 토큰 === */
-:root {
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', 'Segoe UI', 'Malgun Gothic', sans-serif;
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#1D9E75" />
+    <meta name="description" content="나는 어떤 축산인/연구자 스타일일까?" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://heo-donghyuk.github.io/pnu-zootopia/"
+    />
+    <meta property="og:title" content="축산 FARM 유형 테스트" />
+    <meta
+      property="og:description"
+      content="나는 어떤 축산인/연구자 스타일일까?"
+    />
+    <meta
+      property="og:image"
+      content="https://heo-donghyuk.github.io/pnu-zootopia/pnu-zootopia-og.png"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="축산 FARM 유형 테스트" />
+    <meta
+      name="twitter:description"
+      content="나는 어떤 축산인/연구자 스타일일까?"
+    />
+    <title>축산 FARM 유형 테스트</title>
+    <script
+      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
+      defer
+    ></script>
+    <style>
+      /* === 디자인 토큰 === */
+      :root {
+        --font-sans:
+          -apple-system, BlinkMacSystemFont, "Pretendard",
+          "Apple SD Gothic Neo", "Segoe UI", "Malgun Gothic", sans-serif;
 
-  --bg-app: #f7f9f8;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f0f4f2;
-  --bg-accent-soft: #E1F5EE;
+        --bg-app: #f7f9f8;
+        --bg-primary: #ffffff;
+        --bg-secondary: #f0f4f2;
+        --bg-accent-soft: #e1f5ee;
 
-  --text-primary: #1a1d1c;
-  --text-secondary: #6b7472;
-  --text-muted: #9aa3a1;
+        --text-primary: #1a1d1c;
+        --text-secondary: #6b7472;
+        --text-muted: #9aa3a1;
 
-  --border-light: #e8ebea;
-  --border-medium: #d4d9d7;
+        --border-light: #e8ebea;
+        --border-medium: #d4d9d7;
 
-  --brand: #1D9E75;
-  --brand-dark: #0F6E56;
-  --brand-soft: #E1F5EE;
-  --brand-shadow: rgba(29, 158, 117, 0.25);
-  --brand-shadow-lg: rgba(29, 158, 117, 0.35);
+        --brand: #1d9e75;
+        --brand-dark: #0f6e56;
+        --brand-soft: #e1f5ee;
+        --brand-shadow: rgba(29, 158, 117, 0.25);
+        --brand-shadow-lg: rgba(29, 158, 117, 0.35);
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-pill: 999px;
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --radius-pill: 999px;
 
-  --shadow-sm: 0 1px 2px rgba(15, 110, 86, 0.04);
-  --shadow-md: 0 4px 12px rgba(15, 110, 86, 0.08);
-  --shadow-lg: 0 8px 24px rgba(15, 110, 86, 0.12);
+        --shadow-sm: 0 1px 2px rgba(15, 110, 86, 0.04);
+        --shadow-md: 0 4px 12px rgba(15, 110, 86, 0.08);
+        --shadow-lg: 0 8px 24px rgba(15, 110, 86, 0.12);
 
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-left: env(safe-area-inset-left, 0px);
-  --safe-right: env(safe-area-inset-right, 0px);
-}
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+        --safe-left: env(safe-area-inset-left, 0px);
+        --safe-right: env(safe-area-inset-right, 0px);
+      }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-body {
-  font-family: var(--font-sans);
-  background: var(--bg-app);
-  color: var(--text-primary);
-  font-size: 16px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
-  min-height: 100dvh;
-  overflow-x: hidden;
-}
-button { font-family: inherit; -webkit-tap-highlight-color: transparent; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+      body {
+        font-family: var(--font-sans);
+        background: var(--bg-app);
+        color: var(--text-primary);
+        font-size: 16px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        min-height: 100vh;
+        min-height: 100svh;
+        overflow-x: hidden;
+      }
+      button {
+        font-family: inherit;
+        -webkit-tap-highlight-color: transparent;
+      }
 
-.wrap {
-  max-width: 640px;
-  margin: 0 auto;
-  padding:
-    calc(1rem + var(--safe-top))
-    calc(1rem + var(--safe-right))
-    calc(2rem + var(--safe-bottom))
-    calc(1rem + var(--safe-left));
-  min-height: 100dvh;
-}
+      .wrap {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: calc(1rem + var(--safe-top)) calc(1rem + var(--safe-right))
+          calc(2rem + var(--safe-bottom)) calc(1rem + var(--safe-left));
+        min-height: 100svh;
+      }
 
-/* 모든 섹션 기본은 숨김, JS가 active 클래스 부여 */
-.section { display: none; animation: fadeIn 0.3s ease; }
-.section.active { display: block; }
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+      /* 모든 섹션 기본은 숨김, JS가 active 클래스 부여 */
+      .section {
+        display: none;
+        animation: fadeIn 0.3s ease;
+      }
+      .section.active {
+        display: block;
+      }
+      #landing-section.active {
+        animation: none;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-/* === 랜딩 페이지 === */
-#landing-section {
-  min-height: calc(100dvh - 3rem);
-  position: relative;
-  padding-bottom: 110px;
-}
-#landing-section::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.95) 0 24%, rgba(248, 245, 236, 0) 46%),
-    linear-gradient(180deg, #fbf8ef 0%, #f7f3e7 58%, #eef3df 100%);
-}
-#landing-section::after {
-  content: "";
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-  height: 120px;
-  background:
-    radial-gradient(90% 70% at 18% 100%, rgba(190, 205, 157, 0.34) 0 58%, rgba(190, 205, 157, 0) 59%),
-    radial-gradient(96% 75% at 78% 105%, rgba(161, 184, 124, 0.28) 0 60%, rgba(161, 184, 124, 0) 61%),
-    linear-gradient(180deg, rgba(226, 235, 205, 0) 0%, rgba(216, 229, 194, 0.88) 44%, rgba(208, 223, 183, 0.92) 100%);
-  pointer-events: none;
-}
-.hero {
-  text-align: center;
-  padding: clamp(1.75rem, 6vw, 2.75rem) 0 clamp(1.5rem, 5vw, 2rem);
-}
-.brand-logo {
-  width: clamp(118px, 32vw, 164px);
-  height: auto;
-  display: block;
-  margin: 0 auto 20px;
-}
-.badge {
-  display: inline-block;
-  background: rgba(29, 126, 89, 0.1);
-  color: var(--brand-dark);
-  font-size: clamp(11px, 3vw, 13px);
-  font-weight: 600;
-  letter-spacing: 0;
-  padding: 8px 16px;
-  border-radius: var(--radius-pill);
-  margin-bottom: 22px;
-  word-break: keep-all;
-}
-.hero h1 {
-  font-size: clamp(30px, 8.6vw, 42px);
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: 0;
-  margin-bottom: 18px;
-  line-height: 1.22;
-}
-.hero h1 .accent { color: var(--brand-dark); }
-.hero p {
-  font-size: clamp(15px, 4vw, 18px);
-  color: var(--text-secondary);
-  line-height: 1.8;
-  word-break: keep-all;
-}
+      /* === 랜딩 페이지 === */
+      #landing-section {
+        min-height: calc(100svh - 3rem);
+        position: relative;
+        padding-bottom: 155px;
+      }
+      #landing-section::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        background:
+          radial-gradient(
+            circle at 50% 0%,
+            rgba(255, 255, 255, 0.95) 0 24%,
+            rgba(248, 245, 236, 0) 46%
+          ),
+          linear-gradient(180deg, #fbf8ef 0%, #f7f3e7 58%, #eef3df 100%);
+      }
+      #landing-section::after {
+        content: "";
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        height: 120px;
+        background:
+          radial-gradient(
+            90% 70% at 18% 100%,
+            rgba(190, 205, 157, 0.34) 0 58%,
+            rgba(190, 205, 157, 0) 59%
+          ),
+          radial-gradient(
+            96% 75% at 78% 105%,
+            rgba(161, 184, 124, 0.28) 0 60%,
+            rgba(161, 184, 124, 0) 61%
+          ),
+          linear-gradient(
+            180deg,
+            rgba(226, 235, 205, 0) 0%,
+            rgba(216, 229, 194, 0.88) 44%,
+            rgba(208, 223, 183, 0.92) 100%
+          );
+        pointer-events: none;
+      }
+      .hero {
+        text-align: center;
+        padding: clamp(1.75rem, 6vw, 2.75rem) 0 clamp(1.5rem, 5vw, 2rem);
+      }
+      .brand-logo {
+        width: clamp(118px, 32vw, 164px);
+        aspect-ratio: 575 / 324;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto 20px;
+      }
+      .badge {
+        display: inline-block;
+        background: rgba(29, 126, 89, 0.1);
+        color: var(--brand-dark);
+        font-size: clamp(11px, 3vw, 13px);
+        font-weight: 600;
+        letter-spacing: 0;
+        padding: 8px 16px;
+        border-radius: var(--radius-pill);
+        margin-bottom: 22px;
+        word-break: keep-all;
+      }
+      .hero h1 {
+        font-size: clamp(30px, 8.6vw, 42px);
+        font-weight: 800;
+        color: var(--text-primary);
+        letter-spacing: 0;
+        margin-bottom: 18px;
+        line-height: 1.22;
+      }
+      .hero h1 .accent {
+        color: var(--brand-dark);
+      }
+      .hero p {
+        font-size: clamp(15px, 4vw, 18px);
+        color: var(--text-secondary);
+        line-height: 1.8;
+        word-break: keep-all;
+      }
 
-.axis-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin: clamp(1.75rem, 5vw, 2.25rem) 0;
-}
-@media (min-width: 480px) {
-  .axis-row {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-  }
-}
-.axis-card {
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(15, 110, 86, 0.1);
-  border-radius: 14px;
-  padding: clamp(20px, 6vw, 28px) 10px;
-  text-align: center;
-  box-shadow: 0 8px 22px rgba(49, 74, 59, 0.08);
-}
-.axis-letter {
-  font-size: clamp(36px, 10vw, 48px);
-  font-weight: 800;
-  color: var(--brand-dark);
-  letter-spacing: 0;
-  line-height: 1;
-}
-.axis-word {
-  font-size: clamp(12px, 3.4vw, 14px);
-  color: #7f8581;
-  margin-top: 12px;
-  letter-spacing: 0;
-  white-space: nowrap;
-}
+      .axis-row {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: clamp(1.25rem, 4vw, 1.75rem) 0;
+      }
+      .axis-card {
+        display: grid;
+        grid-template-columns: 72px 1fr;
+        align-items: center;
+        gap: 14px;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid rgba(15, 110, 86, 0.1);
+        border-radius: 14px;
+        padding: 11px 14px 11px 11px;
+        text-align: left;
+        box-shadow: 0 8px 22px rgba(49, 74, 59, 0.08);
+        min-height: 86px;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: axis-card-enter 520ms cubic-bezier(0.2, 0.8, 0.2, 1)
+          forwards;
+      }
+      .axis-card:nth-child(1) {
+        animation-delay: 80ms;
+      }
+      .axis-card:nth-child(2) {
+        animation-delay: 150ms;
+      }
+      .axis-card:nth-child(3) {
+        animation-delay: 220ms;
+      }
+      .axis-card:nth-child(4) {
+        animation-delay: 290ms;
+      }
+      .axis-portrait {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(180deg, #eef6e9 0%, #dbead2 100%);
+        border: 1px solid rgba(15, 110, 86, 0.1);
+        overflow: hidden;
+        position: relative;
+        box-shadow: inset 0 -8px 18px rgba(15, 110, 86, 0.08);
+        transform: scale(0.94);
+        animation: axis-portrait-pop 520ms cubic-bezier(0.2, 0.8, 0.2, 1)
+          forwards;
+      }
+      .axis-portrait img {
+        position: absolute;
+        left: 50%;
+        top: 130%;
+        width: 120px;
+        height: auto;
+        transform: translate(-50%, -50%);
+        object-fit: contain;
+      }
+      .axis-copy {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: 31px 1fr;
+        column-gap: 3px;
+        align-items: center;
+      }
+      .axis-letter {
+        font-size: clamp(24px, 7vw, 32px);
+        font-weight: 800;
+        color: var(--brand-dark);
+        letter-spacing: 0;
+        line-height: 1;
+        margin-bottom: 0;
+        grid-row: 1 / 3;
+        grid-column: 1;
+      }
+      .axis-word {
+        font-size: clamp(14px, 3.8vw, 16px);
+        color: var(--text-primary);
+        font-weight: 700;
+        margin-top: 0;
+        letter-spacing: 0;
+        white-space: nowrap;
+        grid-column: 2;
+      }
+      .axis-desc {
+        font-size: clamp(11px, 3vw, 13px);
+        color: #7f8581;
+        margin-top: 3px;
+        line-height: 1.35;
+        word-break: keep-all;
+        grid-column: 2;
+      }
+      @keyframes axis-card-enter {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes axis-portrait-pop {
+        from {
+          transform: scale(0.94);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+      @keyframes start-area-enter {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .axis-card,
+        .axis-portrait,
+        .start-area {
+          animation: none;
+          opacity: 1;
+          transform: none;
+        }
+      }
 
-/* 시작하기 버튼 (랜딩 메인 CTA) */
-.start-area {
-  margin-top: clamp(1.5rem, 5vw, 2rem);
-}
-.btn-start {
-  width: 100%;
-  padding: 20px 24px;
-  border-radius: 18px;
-  font-size: clamp(18px, 4.8vw, 22px);
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
-  background: #1f7a52;
-  color: white;
-  letter-spacing: 0;
-  min-height: 64px;
-  box-shadow: 0 8px 18px rgba(31, 122, 82, 0.2);
-  transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-@media (hover: hover) {
-  .btn-start:hover {
-    transform: translateY(-2px);
-    background: #176a47;
-    box-shadow: 0 10px 24px rgba(31, 122, 82, 0.26);
-  }
-}
-.btn-start:active { transform: scale(0.98); }
-.btn-start .arrow {
-  display: inline-block;
-  transition: transform 0.2s ease;
-}
-@media (hover: hover) {
-  .btn-start:hover .arrow { transform: translateX(4px); }
-}
-.start-meta {
-  text-align: center;
-  font-size: 14px;
-  color: #808783;
-  margin-top: 18px;
-  font-weight: 500;
-}
+      /* 시작하기 버튼 (랜딩 메인 CTA) */
+      .start-area {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 20;
+        width: 100%;
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 28px 1rem 14px;
+        background: linear-gradient(
+          180deg,
+          rgba(247, 243, 231, 0) 0%,
+          rgba(247, 243, 231, 0.92) 32%,
+          rgba(238, 243, 223, 0.98) 100%
+        );
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(18px);
+        animation: start-area-enter 620ms cubic-bezier(0.2, 0.8, 0.2, 1)
+          420ms forwards;
+      }
+      .btn-start {
+        width: 100%;
+        padding: 20px 24px;
+        border-radius: 18px;
+        font-size: clamp(18px, 4.8vw, 22px);
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        background: #1f7a52;
+        color: white;
+        letter-spacing: 0;
+        min-height: 64px;
+        box-shadow: 0 8px 18px rgba(31, 122, 82, 0.2);
+        transition:
+          transform 0.15s ease,
+          background 0.2s ease,
+          box-shadow 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        pointer-events: auto;
+      }
+      @media (hover: hover) {
+        .btn-start:hover {
+          transform: translateY(-2px);
+          background: #176a47;
+          box-shadow: 0 10px 24px rgba(31, 122, 82, 0.26);
+        }
+      }
+      .btn-start:active {
+        transform: scale(0.98);
+      }
+      .btn-start .arrow {
+        display: inline-block;
+        transition: transform 0.2s ease;
+      }
+      @media (hover: hover) {
+        .btn-start:hover .arrow {
+          transform: translateX(4px);
+        }
+      }
+      .start-meta {
+        text-align: center;
+        font-size: 13px;
+        color: #808783;
+        margin-top: 12px;
+        font-weight: 500;
+      }
 
-/* === 테스트 페이지 === */
-.test-top {
-  padding: clamp(1rem, 4vw, 1.5rem) 0 clamp(1rem, 3vw, 1.25rem);
-}
-.progress-area { margin-bottom: clamp(1.25rem, 4vw, 1.75rem); }
-.progress-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-.progress-label .q-pct { color: var(--brand-dark); }
-.progress-bar {
-  height: 8px;
-  background: var(--border-light);
-  border-radius: var(--radius-pill);
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--brand) 0%, var(--brand-dark) 100%);
-  border-radius: var(--radius-pill);
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
+      /* === 테스트 페이지 === */
+      .test-top {
+        padding: clamp(1rem, 4vw, 1.5rem) 0 clamp(1rem, 3vw, 1.25rem);
+      }
+      .progress-area {
+        margin-bottom: clamp(1.25rem, 4vw, 1.75rem);
+      }
+      .progress-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      .progress-label .q-pct {
+        color: var(--brand-dark);
+      }
+      .progress-bar {
+        height: 8px;
+        background: var(--border-light);
+        border-radius: var(--radius-pill);
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          var(--brand) 0%,
+          var(--brand-dark) 100%
+        );
+        border-radius: var(--radius-pill);
+        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
 
-.q-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: clamp(1.25rem, 4.5vw, 1.75rem);
-  margin-bottom: 1rem;
-  box-shadow: var(--shadow-sm);
-}
-.q-axis {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--brand-dark);
-  background: var(--brand-soft);
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
-  display: inline-block;
-  margin-bottom: 14px;
-  letter-spacing: -0.01em;
-}
-.q-text {
-  font-size: clamp(16px, 4.4vw, 18px);
-  color: var(--text-primary);
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  word-break: keep-all;
-}
+      .q-card {
+        background: var(--bg-primary);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-lg);
+        padding: clamp(1.25rem, 4.5vw, 1.75rem);
+        margin-bottom: 1rem;
+        box-shadow: var(--shadow-sm);
+      }
+      .q-axis {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--brand-dark);
+        background: var(--brand-soft);
+        padding: 4px 10px;
+        border-radius: var(--radius-pill);
+        display: inline-block;
+        margin-bottom: 14px;
+        letter-spacing: -0.01em;
+      }
+      .q-text {
+        font-size: clamp(16px, 4.4vw, 18px);
+        color: var(--text-primary);
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.015em;
+        word-break: keep-all;
+      }
 
-.q-options { display: flex; flex-direction: column; gap: 12px; }
-.q-opt {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px 18px;
-  border: 2px solid var(--border-light);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  background: var(--bg-primary);
-  min-height: 72px;
-  user-select: none;
-  -webkit-user-select: none;
-  position: relative;
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.2s ease;
-  will-change: transform;
-}
-@media (hover: hover) {
-  .q-opt:hover {
-    border-color: var(--brand);
-    background: var(--brand-soft);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-  .q-opt:hover .opt-arrow { transform: translateX(4px); color: var(--brand-dark); }
-}
-.q-opt:active { transform: scale(0.98); }
+      .q-options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .q-opt {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 18px;
+        border: 2px solid var(--border-light);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        background: var(--bg-primary);
+        min-height: 72px;
+        user-select: none;
+        -webkit-user-select: none;
+        position: relative;
+        transition:
+          border-color 0.2s ease,
+          background 0.2s ease,
+          transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+          box-shadow 0.2s ease;
+        will-change: transform;
+      }
+      @media (hover: hover) {
+        .q-opt:hover {
+          border-color: var(--brand);
+          background: var(--brand-soft);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-md);
+        }
+        .q-opt:hover .opt-arrow {
+          transform: translateX(4px);
+          color: var(--brand-dark);
+        }
+      }
+      .q-opt:active {
+        transform: scale(0.98);
+      }
 
-.opt-letter {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 700;
-  flex-shrink: 0;
-  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
-}
+      .opt-letter {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--bg-secondary);
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 700;
+        flex-shrink: 0;
+        transition:
+          background 0.25s ease,
+          color 0.25s ease,
+          transform 0.25s ease;
+      }
 
-.opt-body { flex: 1; min-width: 0; }
-.opt-text {
-  font-size: clamp(14px, 3.8vw, 15px);
-  color: var(--text-primary);
-  line-height: 1.55;
-  word-break: keep-all;
-  font-weight: 500;
-}
-.opt-label {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 4px;
-  font-weight: 500;
-}
+      .opt-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .opt-text {
+        font-size: clamp(14px, 3.8vw, 15px);
+        color: var(--text-primary);
+        line-height: 1.55;
+        word-break: keep-all;
+        font-weight: 500;
+      }
+      .opt-label {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 4px;
+        font-weight: 500;
+      }
 
-.opt-arrow {
-  flex-shrink: 0;
-  font-size: 18px;
-  color: var(--text-muted);
-  transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
-  line-height: 1;
-}
+      .opt-arrow {
+        flex-shrink: 0;
+        font-size: 18px;
+        color: var(--text-muted);
+        transition:
+          transform 0.2s ease,
+          color 0.2s ease,
+          opacity 0.2s ease;
+        line-height: 1;
+      }
 
-/* 선택 시 애니메이션 */
-.q-opt.selecting {
-  border-color: var(--brand);
-  background: var(--brand);
-  box-shadow: 0 6px 20px var(--brand-shadow);
-  animation: select-pulse 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.q-opt.selecting .opt-text { color: white; transition: color 0.2s ease; }
-.q-opt.selecting .opt-label { color: rgba(255, 255, 255, 0.85); }
-.q-opt.selecting .opt-letter {
-  background: white;
-  color: var(--brand);
-  transform: scale(1.1) rotate(-5deg);
-}
-.q-opt.selecting .opt-arrow {
-  color: white;
-  transform: translateX(6px);
-  opacity: 1;
-}
-.q-opt.fading {
-  opacity: 0.35;
-  transform: scale(0.97);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-@keyframes select-pulse {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.035); }
-  100% { transform: scale(1); }
-}
+      /* 선택 시 애니메이션 */
+      .q-opt.selecting {
+        border-color: var(--brand);
+        background: var(--brand);
+        box-shadow: 0 6px 20px var(--brand-shadow);
+        animation: select-pulse 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .q-opt.selecting .opt-text {
+        color: white;
+        transition: color 0.2s ease;
+      }
+      .q-opt.selecting .opt-label {
+        color: rgba(255, 255, 255, 0.85);
+      }
+      .q-opt.selecting .opt-letter {
+        background: white;
+        color: var(--brand);
+        transform: scale(1.1) rotate(-5deg);
+      }
+      .q-opt.selecting .opt-arrow {
+        color: white;
+        transform: translateX(6px);
+        opacity: 1;
+      }
+      .q-opt.fading {
+        opacity: 0.35;
+        transform: scale(0.97);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+      }
+      @keyframes select-pulse {
+        0% {
+          transform: scale(1);
+        }
+        40% {
+          transform: scale(1.035);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
 
-/* 이전 답 표시 (자동 진행 없음) */
-.q-opt.previously-selected {
-  border-color: var(--brand);
-  background: var(--brand-soft);
-}
-.q-opt.previously-selected .opt-letter {
-  background: var(--brand);
-  color: white;
-}
+      /* 이전 답 표시 (자동 진행 없음) */
+      .q-opt.previously-selected {
+        border-color: var(--brand);
+        background: var(--brand-soft);
+      }
+      .q-opt.previously-selected .opt-letter {
+        background: var(--brand);
+        color: white;
+      }
 
-.nav-row {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 1.25rem;
-}
-.btn-back {
-  padding: 12px 20px;
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1.5px solid var(--border-light);
-  background: var(--bg-primary);
-  color: var(--text-secondary);
-  transition: background 0.15s, transform 0.1s, opacity 0.15s;
-  min-height: 44px;
-  letter-spacing: -0.01em;
-}
-@media (hover: hover) {
-  .btn-back:hover { background: var(--bg-secondary); color: var(--text-primary); }
-}
-.btn-back:active { transform: scale(0.98); }
-.btn-back:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-  transform: none;
-}
+      .nav-row {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 1.25rem;
+      }
+      .btn-back {
+        padding: 12px 20px;
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1.5px solid var(--border-light);
+        background: var(--bg-primary);
+        color: var(--text-secondary);
+        transition:
+          background 0.15s,
+          transform 0.1s,
+          opacity 0.15s;
+        min-height: 44px;
+        letter-spacing: -0.01em;
+      }
+      @media (hover: hover) {
+        .btn-back:hover {
+          background: var(--bg-secondary);
+          color: var(--text-primary);
+        }
+      }
+      .btn-back:active {
+        transform: scale(0.98);
+      }
+      .btn-back:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        transform: none;
+      }
 
-/* === 결과 페이지 === */
-.result-header {
-  text-align: center;
-  padding: clamp(2rem, 7vw, 3rem) 0 clamp(1.25rem, 4vw, 1.75rem);
-}
-.res-label {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-  font-weight: 500;
-}
-.type-badge {
-  font-size: clamp(40px, 12vw, 52px);
-  font-weight: 800;
-  color: var(--brand);
-  letter-spacing: 0.08em;
-  margin-bottom: 10px;
-  line-height: 1.1;
-}
-.result-character {
-  width: clamp(150px, 44vw, 203px);
-  height: clamp(195px, 57vw, 255px);
-  object-fit: contain;
-  display: block;
-  margin: 4px auto 12px;
-}
-.type-name {
-  font-size: clamp(17px, 4.8vw, 20px);
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 12px;
-  letter-spacing: -0.015em;
-}
-.type-desc {
-  font-size: clamp(13px, 3.6vw, 15px);
-  color: var(--text-secondary);
-  line-height: 1.7;
-  word-break: keep-all;
-  padding: 0 4px;
-}
+      /* === 결과 페이지 === */
+      .result-header {
+        text-align: center;
+        padding: clamp(2rem, 7vw, 3rem) 0 clamp(1.25rem, 4vw, 1.75rem);
+      }
+      .res-label {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+        font-weight: 500;
+      }
+      .type-badge {
+        font-size: clamp(40px, 12vw, 52px);
+        font-weight: 800;
+        color: var(--brand);
+        letter-spacing: 0.08em;
+        margin-bottom: 10px;
+        line-height: 1.1;
+      }
+      .result-character {
+        width: clamp(150px, 44vw, 203px);
+        height: clamp(195px, 57vw, 255px);
+        object-fit: contain;
+        display: block;
+        margin: 4px auto 12px;
+      }
+      .type-name {
+        font-size: clamp(17px, 4.8vw, 20px);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+        letter-spacing: -0.015em;
+      }
+      .type-desc {
+        font-size: clamp(13px, 3.6vw, 15px);
+        color: var(--text-secondary);
+        line-height: 1.7;
+        word-break: keep-all;
+        padding: 0 4px;
+      }
 
-.axis-result-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin: clamp(1.25rem, 4vw, 1.75rem) 0;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-}
-.axis-result {
-  padding: 18px 16px;
-}
-.axis-result + .axis-result {
-  border-top: 1px solid var(--border-light);
-}
-.axis-result-top {
-  text-align: center;
-  margin-bottom: 14px;
-}
-.axis-result-label {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: 0;
-}
-.axis-score-row {
-  display: grid;
-  grid-template-columns: 56px 1fr 56px;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-.axis-pct {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-.axis-pct.right { text-align: right; }
-.axis-pct.active { color: var(--brand-dark); }
-.axis-bar-wrap {
-  height: 10px;
-  background: #f0f1ef;
-  border-radius: var(--radius-pill);
-  overflow: hidden;
-  position: relative;
-}
-.axis-bar {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  background: var(--brand);
-  border-radius: var(--radius-pill);
-}
-.axis-bar.left { left: 0; }
-.axis-bar.right { right: 0; }
-.axis-label-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.axis-side-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  word-break: keep-all;
-}
-.axis-side-label.right { text-align: right; }
-.axis-side-label.active { color: var(--brand-dark); }
+      .axis-result-row {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin: clamp(1.25rem, 4vw, 1.75rem) 0;
+        background: var(--bg-primary);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
+      }
+      .axis-result {
+        padding: 18px 16px;
+      }
+      .axis-result + .axis-result {
+        border-top: 1px solid var(--border-light);
+      }
+      .axis-result-top {
+        text-align: center;
+        margin-bottom: 14px;
+      }
+      .axis-result-label {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-primary);
+        letter-spacing: 0;
+      }
+      .axis-score-row {
+        display: grid;
+        grid-template-columns: 56px 1fr 56px;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+      .axis-pct {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text-muted);
+        white-space: nowrap;
+      }
+      .axis-pct.right {
+        text-align: right;
+      }
+      .axis-pct.active {
+        color: var(--brand-dark);
+      }
+      .axis-bar-wrap {
+        height: 10px;
+        background: #f0f1ef;
+        border-radius: var(--radius-pill);
+        overflow: hidden;
+        position: relative;
+      }
+      .axis-bar {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        background: var(--brand);
+        border-radius: var(--radius-pill);
+      }
+      .axis-bar.left {
+        left: 0;
+      }
+      .axis-bar.right {
+        right: 0;
+      }
+      .axis-label-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .axis-side-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-muted);
+        word-break: keep-all;
+      }
+      .axis-side-label.right {
+        text-align: right;
+      }
+      .axis-side-label.active {
+        color: var(--brand-dark);
+      }
 
-.rec-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: clamp(1rem, 3.5vw, 1.25rem);
-  margin-bottom: 10px;
-  box-shadow: var(--shadow-sm);
-}
-.rec-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  letter-spacing: -0.01em;
-}
-.rec-item {
-  font-size: 14px;
-  color: var(--text-primary);
-  line-height: 1.6;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.rec-tag {
-  display: inline-block;
-  background: var(--brand-soft);
-  color: var(--brand-dark);
-  font-size: 12px;
-  font-weight: 600;
-  padding: 5px 11px;
-  border-radius: var(--radius-pill);
-  letter-spacing: -0.01em;
-}
-.rec-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--brand-soft);
-  color: var(--brand-dark);
-  font-size: 12px;
-  font-weight: 600;
-  padding: 6px 11px;
-  border-radius: var(--radius-pill);
-  letter-spacing: -0.01em;
-  text-decoration: none;
-  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
-}
-@media (hover: hover) {
-  .rec-link:hover {
-    background: var(--brand);
-    color: white;
-    transform: translateY(-1px);
-  }
-}
-.rec-link:active { transform: scale(0.98); }
+      .rec-card {
+        background: var(--bg-primary);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-lg);
+        padding: clamp(1rem, 3.5vw, 1.25rem);
+        margin-bottom: 10px;
+        box-shadow: var(--shadow-sm);
+      }
+      .rec-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        letter-spacing: -0.01em;
+      }
+      .rec-item {
+        font-size: 14px;
+        color: var(--text-primary);
+        line-height: 1.6;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .rec-tag {
+        display: inline-block;
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 11px;
+        border-radius: var(--radius-pill);
+        letter-spacing: -0.01em;
+      }
+      .rec-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 11px;
+        border-radius: var(--radius-pill);
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease,
+          transform 0.15s ease;
+      }
+      @media (hover: hover) {
+        .rec-link:hover {
+          background: var(--brand);
+          color: white;
+          transform: translateY(-1px);
+        }
+      }
+      .rec-link:active {
+        transform: scale(0.98);
+      }
 
-.share-note {
-  text-align: center;
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin: 1.25rem 0;
-}
-.share-btn {
-  width: 100%;
-  padding: 15px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
-  border: none;
-  font-size: 15px;
-  font-weight: 700;
-  color: white;
-  cursor: pointer;
-  min-height: 50px;
-  font-family: inherit;
-  box-shadow: 0 5px 16px var(--brand-shadow);
-  transition: transform 0.1s, box-shadow 0.2s, filter 0.2s;
-  margin-bottom: 10px;
-}
-@media (hover: hover) {
-  .share-btn:hover {
-    filter: brightness(1.02);
-    box-shadow: 0 8px 22px var(--brand-shadow-lg);
-  }
-}
-.share-btn:active { transform: scale(0.98); }
-.retry-btn {
-  width: 100%;
-  padding: 14px;
-  border-radius: var(--radius-md);
-  background: var(--bg-primary);
-  border: 1.5px solid var(--border-light);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-primary);
-  cursor: pointer;
-  min-height: 48px;
-  font-family: inherit;
-  transition: background 0.15s, transform 0.1s;
-}
-@media (hover: hover) {
-  .retry-btn:hover { background: var(--bg-secondary); }
-}
-.retry-btn:active { transform: scale(0.98); }
-</style>
-</head>
-<body>
+      .share-note {
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin: 1.25rem 0;
+      }
+      .share-btn {
+        width: 100%;
+        padding: 15px;
+        border-radius: var(--radius-md);
+        background: linear-gradient(
+          135deg,
+          var(--brand) 0%,
+          var(--brand-dark) 100%
+        );
+        border: none;
+        font-size: 15px;
+        font-weight: 700;
+        color: white;
+        cursor: pointer;
+        min-height: 50px;
+        font-family: inherit;
+        box-shadow: 0 5px 16px var(--brand-shadow);
+        transition:
+          transform 0.1s,
+          box-shadow 0.2s,
+          filter 0.2s;
+        margin-bottom: 10px;
+      }
+      @media (hover: hover) {
+        .share-btn:hover {
+          filter: brightness(1.02);
+          box-shadow: 0 8px 22px var(--brand-shadow-lg);
+        }
+      }
+      .share-btn:active {
+        transform: scale(0.98);
+      }
+      .retry-btn {
+        width: 100%;
+        padding: 14px;
+        border-radius: var(--radius-md);
+        background: var(--bg-primary);
+        border: 1.5px solid var(--border-light);
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-primary);
+        cursor: pointer;
+        min-height: 48px;
+        font-family: inherit;
+        transition:
+          background 0.15s,
+          transform 0.1s;
+      }
+      @media (hover: hover) {
+        .retry-btn:hover {
+          background: var(--bg-secondary);
+        }
+      }
+      .retry-btn:active {
+        transform: scale(0.98);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- 1. 랜딩 -->
+      <section class="section active" id="landing-section">
+        <div class="hero">
+          <img
+            class="brand-logo"
+            src="pnu_zootopia_logo_transparent.png"
+            width="575"
+            height="324"
+            alt="PNU Zootopia"
+          />
+          <div class="badge">
+            2026 주토피아 · 부산대학교 동물생명자원과학과 꿈그린 학습동아리
+          </div>
+          <h1>축산 <span class="accent">FARM</span> 유형 테스트</h1>
+          <p>
+            나는 어떤 축산인/연구자 스타일일까?<br />12개 질문으로 알아보는
+            나만의 FARM 유형
+          </p>
+        </div>
+        <div class="axis-row">
+          <div class="axis-card">
+            <div class="axis-portrait">
+              <img src="characters/FATN.webp" alt="" />
+            </div>
+            <div class="axis-copy">
+              <div class="axis-letter">F</div>
+              <div class="axis-word">현장형 vs 연구형</div>
+              <div class="axis-desc">
+                직접 경험과 탐구 방식 중 어디에 가까운지 봐요.
+              </div>
+            </div>
+          </div>
+          <div class="axis-card">
+            <div class="axis-portrait">
+              <img src="characters/RATN.webp" alt="" />
+            </div>
+            <div class="axis-copy">
+              <div class="axis-letter">A</div>
+              <div class="axis-word">생명형 vs 산업형</div>
+              <div class="axis-desc">
+                동물 자체와 축산 자원 활용 중 관심 방향을 봐요.
+              </div>
+            </div>
+          </div>
+          <div class="axis-card">
+            <div class="axis-portrait">
+              <img src="characters/FPTN.webp" alt="" />
+            </div>
+            <div class="axis-copy">
+              <div class="axis-letter">R</div>
+              <div class="axis-word">협력형 vs 독립형</div>
+              <div class="axis-desc">
+                함께 해결하는 방식과 혼자 몰입하는 방식을 비교해요.
+              </div>
+            </div>
+          </div>
+          <div class="axis-card">
+            <div class="axis-portrait">
+              <img src="characters/FPIN.webp" alt="" />
+            </div>
+            <div class="axis-copy">
+              <div class="axis-letter">M</div>
+              <div class="axis-word">혁신형 vs 전통형</div>
+              <div class="axis-desc">
+                새로운 시도와 검증된 방식 중 선호를 확인해요.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="start-area">
+          <button class="btn-start" onclick="startTest()">
+            <span>테스트 시작하기</span>
+            <span class="arrow">→</span>
+          </button>
+          <div class="start-meta">
+            약 2분 소요 · 12문항 · 학과 실험실·진로 추천
+          </div>
+        </div>
+      </section>
 
-<div class="wrap">
+      <!-- 2. 테스트 -->
+      <section class="section" id="test-section">
+        <div class="test-top">
+          <div class="progress-area">
+            <div class="progress-label">
+              <span id="q-counter">1 / 12</span
+              ><span class="q-pct" id="q-pct">0%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="prog" style="width: 0%"></div>
+            </div>
+          </div>
+          <div id="q-area"></div>
+          <div class="nav-row">
+            <button class="btn-back" id="btn-prev" onclick="prev()" disabled>
+              ← 이전 문항
+            </button>
+          </div>
+        </div>
+      </section>
 
-  <!-- 1. 랜딩 -->
-  <section class="section active" id="landing-section">
-    <div class="hero">
-      <img class="brand-logo" src="pnu_zootopia_logo_transparent.png" alt="PNU Zootopia">
-      <div class="badge">2026 주토피아 · 부산대학교 동물생명자원과학과 꿈그린 학습동아리</div>
-      <h1>축산 <span class="accent">FARM</span> 유형 테스트</h1>
-      <p>나는 어떤 농업인/연구자 스타일일까?<br>12개 질문으로 알아보는 나만의 FARM 유형</p>
+      <!-- 3. 결과 -->
+      <section class="section" id="result-section">
+        <div class="result-header">
+          <div class="res-label">나의 FARM 유형은</div>
+          <div class="type-badge" id="res-type"></div>
+          <img
+            class="result-character"
+            id="res-character"
+            src="characters/FATN.webp"
+            alt=""
+          />
+          <div class="type-name" id="res-name"></div>
+          <div class="type-desc" id="res-desc"></div>
+        </div>
+        <div class="axis-result-row" id="axis-bars"></div>
+        <div id="rec-area"></div>
+        <div class="share-note">
+          2026년 주토피아 부산대학교 동물생명자원과학과 꿈그린 학습동아리
+        </div>
+        <button class="share-btn" onclick="shareTest()">
+          친구에게 공유하기
+        </button>
+        <button class="retry-btn" onclick="restart()">↺ 다시 테스트하기</button>
+      </section>
     </div>
-    <div class="axis-row">
-      <div class="axis-card"><div class="axis-letter">F</div><div class="axis-word">현장형 vs 연구형</div></div>
-      <div class="axis-card"><div class="axis-letter">A</div><div class="axis-word">생명형 vs 산업형</div></div>
-      <div class="axis-card"><div class="axis-letter">R</div><div class="axis-word">협력형 vs 독립형</div></div>
-      <div class="axis-card"><div class="axis-letter">M</div><div class="axis-word">혁신형 vs 전통형</div></div>
-    </div>
-    <div class="start-area">
-      <button class="btn-start" onclick="startTest()">
-        <span>테스트 시작하기</span>
-        <span class="arrow">→</span>
-      </button>
-      <div class="start-meta">약 2분 소요 · 12문항 · 학과 실험실·진로 추천</div>
-    </div>
-  </section>
 
-  <!-- 2. 테스트 -->
-  <section class="section" id="test-section">
-    <div class="test-top">
-      <div class="progress-area">
-        <div class="progress-label"><span id="q-counter">1 / 12</span><span class="q-pct" id="q-pct">0%</span></div>
-        <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
-      </div>
-      <div id="q-area"></div>
-      <div class="nav-row">
-        <button class="btn-back" id="btn-prev" onclick="prev()" disabled>← 이전 문항</button>
-      </div>
-    </div>
-  </section>
+    <script>
+      const questions = [
+        {
+          axis: "F",
+          text: "방학 중 실습 기회가 생긴다면 어디서 하고 싶어?",
+          a: {
+            text: "실제 농장이나 축산 현장에서 동물을 직접 다루고 싶어",
+            label: "Field 현장형",
+            val: "F",
+          },
+          b: {
+            text: "연구실에서 데이터를 분석하고 논문을 읽으며 공부하고 싶어",
+            label: "Research 연구형",
+            val: "R",
+          },
+        },
+        {
+          axis: "F",
+          text: "같은 주제라면 어떤 방식으로 배울 때 더 머리에 잘 들어와?",
+          a: {
+            text: "직접 눈으로 보고 몸으로 경험하면서 배울 때",
+            label: "Field 현장형",
+            val: "F",
+          },
+          b: {
+            text: "강의나 책, 논문을 통해 체계적으로 이해할 때",
+            label: "Research 연구형",
+            val: "R",
+          },
+        },
+        {
+          axis: "F",
+          text: "졸업 후 첫 직장을 고를 때 우선순위는?",
+          a: {
+            text: "현장 경험을 쌓을 수 있는 생산 농장이나 현장직",
+            label: "Field 현장형",
+            val: "F",
+          },
+          b: {
+            text: "연구소나 대학원에서 심층 연구를 이어가는 것",
+            label: "Research 연구형",
+            val: "R",
+          },
+        },
 
-  <!-- 3. 결과 -->
-  <section class="section" id="result-section">
-    <div class="result-header">
-      <div class="res-label">나의 FARM 유형은</div>
-      <div class="type-badge" id="res-type"></div>
-      <img class="result-character" id="res-character" src="characters/FATN.webp" alt="">
-      <div class="type-name" id="res-name"></div>
-      <div class="type-desc" id="res-desc"></div>
-    </div>
-    <div class="axis-result-row" id="axis-bars"></div>
-    <div id="rec-area"></div>
-    <div class="share-note">2026년 주토피아 부산대학교 동물생명자원과학과 꿈그린 학습동아리</div>
-    <button class="share-btn" onclick="shareTest()">친구에게 공유하기</button>
-    <button class="retry-btn" onclick="restart()">↺ 다시 테스트하기</button>
-  </section>
+        {
+          axis: "A",
+          text: "동물생명자원과학과에서 가장 흥미를 느끼는 분야는 무엇인가요?",
+          a: {
+            text: "축산 자원의 산업적 활용 분야 (육류·유제품 가공, 사료 개발 등)",
+            label: "Product 산업형",
+            val: "P",
+          },
+          b: {
+            text: "동물의 생명현상을 탐구하는 분야 (생리, 영양, 면역 등)",
+            label: "Animal 생명형",
+            val: "A",
+          },
+        },
+        {
+          axis: "A",
+          text: "학과 연구 주제를 고른다면?",
+          a: {
+            text: "가축의 스트레스 반응 또는 생식 메커니즘 연구",
+            label: "Animal 생명형",
+            val: "A",
+          },
+          b: {
+            text: "축산물 품질 개선 또는 친환경 사료 개발 연구",
+            label: "Product 산업형",
+            val: "P",
+          },
+        },
+        {
+          axis: "A",
+          text: "수업에서 가장 재밌었던 파트는?",
+          a: {
+            text: "동물 해부·생리·번식 등 생명과학 관련 내용",
+            label: "Animal 생명형",
+            val: "A",
+          },
+          b: {
+            text: "도축·가공·유통 등 산업·식품 관련 내용",
+            label: "Product 산업형",
+            val: "P",
+          },
+        },
 
-</div>
+        {
+          axis: "R",
+          text: "팀 프로젝트를 할 때 나는?",
+          a: {
+            text: "역할을 나누고 함께 논의하는 과정이 즐거워",
+            label: "Team 협력형",
+            val: "T",
+          },
+          b: {
+            text: "혼자 담당 부분을 완성해서 합치는 게 더 편해",
+            label: "Independent 독립형",
+            val: "I",
+          },
+        },
+        {
+          axis: "R",
+          text: "실험 결과가 잘 안 나올 때 나는?",
+          a: {
+            text: "팀원과 원인을 같이 분석하고 해결책을 찾아",
+            label: "Team 협력형",
+            val: "T",
+          },
+          b: {
+            text: "혼자 자료 찾아보고 직접 해결하는 걸 먼저 시도해",
+            label: "Independent 독립형",
+            val: "I",
+          },
+        },
+        {
+          axis: "R",
+          text: "내가 더 잘 발휘되는 환경은?",
+          a: {
+            text: "동료들과 아이디어를 주고받으며 시너지가 날 때",
+            label: "Team 협력형",
+            val: "T",
+          },
+          b: {
+            text: "방해 없이 집중해서 내 페이스로 깊이 파고들 때",
+            label: "Independent 독립형",
+            val: "I",
+          },
+        },
 
-<script>
-const questions = [
-  { axis: 'F', text: '방학 중 실습 기회가 생긴다면 어디서 하고 싶어?', a: { text: '실제 농장이나 축산 현장에서 동물을 직접 다루고 싶어', label: 'Field 현장형', val: 'F' }, b: { text: '연구실에서 데이터를 분석하고 논문을 읽으며 공부하고 싶어', label: 'Research 연구형', val: 'R' } },
-  { axis: 'F', text: '같은 주제라면 어떤 방식으로 배울 때 더 머리에 잘 들어와?', a: { text: '직접 눈으로 보고 몸으로 경험하면서 배울 때', label: 'Field 현장형', val: 'F' }, b: { text: '강의나 책, 논문을 통해 체계적으로 이해할 때', label: 'Research 연구형', val: 'R' } },
-  { axis: 'F', text: '졸업 후 첫 직장을 고를 때 우선순위는?', a: { text: '현장 경험을 쌓을 수 있는 생산 농장이나 현장직', label: 'Field 현장형', val: 'F' }, b: { text: '연구소나 대학원에서 심층 연구를 이어가는 것', label: 'Research 연구형', val: 'R' } },
+        {
+          axis: "M",
+          text: "축산 문제를 해결한다면 어떤 방식을 선호해?",
+          a: {
+            text: "AI, 스마트팜, 대체단백질 등 새로운 기술을 적용하고 싶어",
+            label: "Innovative 혁신형",
+            val: "N",
+          },
+          b: {
+            text: "검증된 전통 방식을 개선·정교화하는 것이 더 안전해",
+            label: "Classic 전통형",
+            val: "C",
+          },
+        },
+        {
+          axis: "M",
+          text: "새로운 아이디어가 나왔을 때 나는?",
+          a: {
+            text: "일단 실험해보고 싶어서 빠르게 시작하는 편",
+            label: "Innovative 혁신형",
+            val: "N",
+          },
+          b: {
+            text: "충분히 검토하고 타당성을 확인한 후 시도해",
+            label: "Classic 전통형",
+            val: "C",
+          },
+        },
+        {
+          axis: "M",
+          text: "앞으로 축산업에서 중요한 것은?",
+          a: {
+            text: "기후변화, ESG, 디지털 전환 등 패러다임 변화에 선제 대응",
+            label: "Innovative 혁신형",
+            val: "N",
+          },
+          b: {
+            text: "전통 축산 지식과 기술을 계승·발전시키는 것",
+            label: "Classic 전통형",
+            val: "C",
+          },
+        },
+      ];
 
-  { axis: 'A', text: '동물생명자원과학과에서 가장 흥미를 느끼는 분야는 무엇인가요?', a: { text: '축산 자원의 산업적 활용 분야 (육류·유제품 가공, 사료 개발 등)', label: 'Product 산업형', val: 'P' }, b: { text: '동물의 생명현상을 탐구하는 분야 (생리, 영양, 면역 등)', label: 'Animal 생명형', val: 'A' } },
-  { axis: 'A', text: '학과 연구 주제를 고른다면?', a: { text: '가축의 스트레스 반응 또는 생식 메커니즘 연구', label: 'Animal 생명형', val: 'A' }, b: { text: '축산물 품질 개선 또는 친환경 사료 개발 연구', label: 'Product 산업형', val: 'P' } },
-  { axis: 'A', text: '수업에서 가장 재밌었던 파트는?', a: { text: '동물 해부·생리·번식 등 생명과학 관련 내용', label: 'Animal 생명형', val: 'A' }, b: { text: '도축·가공·유통 등 산업·식품 관련 내용', label: 'Product 산업형', val: 'P' } },
+      const labs = {
+        repro: {
+          name: "동물번식생리학실험실",
+          url: "https://animal.pusan.ac.kr/animal/3240/subview.do?enc=Zm5jdDF8QEB8JTJGcHJvZmwlMkZhbmltYWwlMkY0OSUyRjU2OTklMkZ2aWV3LmRvJTNGcGFnZSUzRDElMjZmaW5kVHlwZSUzRCUyNmZpbmRXb3JkJTNEJTI2",
+        },
+        ruminant: {
+          name: "반추동물영양학실험실",
+          url: "https://ruminant.pusan.ac.kr/ruminant/index.do",
+        },
+        processing: {
+          name: "축산가공실험실",
+          url: "https://animal.pusan.ac.kr/animal/3240/subview.do?enc=Zm5jdDF8QEB8JTJGcHJvZmwlMkZhbmltYWwlMkY0OSUyRjU2OTglMkZ2aWV3LmRvJTNGcGFnZSUzRDElMjZmaW5kVHlwZSUzRCUyNmZpbmRXb3JkJTNEJTI2",
+        },
+        breeding: {
+          name: "동물육종학실험실",
+          url: "https://animal.pusan.ac.kr/animal/3240/subview.do?enc=Zm5jdDF8QEB8JTJGcHJvZmwlMkZhbmltYWwlMkY0OSUyRjU3MDAlMkZ2aWV3LmRvJTNGcGFnZSUzRDElMjZmaW5kVHlwZSUzRCUyNmZpbmRXb3JkJTNEJTI2",
+        },
+        mono: {
+          name: "단위동물영양학실험실",
+          url: "https://animal.pusan.ac.kr/animal/3240/subview.do?enc=Zm5jdDF8QEB8JTJGcHJvZmwlMkZhbmltYWwlMkY0OSUyRjcyNjElMkZ2aWV3LmRvJTNGcGFnZSUzRDElMjZmaW5kVHlwZSUzRCUyNmZpbmRXb3JkJTNEJTI2",
+        },
+        genomics: {
+          name: "기능유전체학실험실",
+          url: "https://sites.google.com/view/fungelab/home?authuser=0",
+        },
+      };
 
-  { axis: 'R', text: '팀 프로젝트를 할 때 나는?', a: { text: '역할을 나누고 함께 논의하는 과정이 즐거워', label: 'Team 협력형', val: 'T' }, b: { text: '혼자 담당 부분을 완성해서 합치는 게 더 편해', label: 'Independent 독립형', val: 'I' } },
-  { axis: 'R', text: '실험 결과가 잘 안 나올 때 나는?', a: { text: '팀원과 원인을 같이 분석하고 해결책을 찾아', label: 'Team 협력형', val: 'T' }, b: { text: '혼자 자료 찾아보고 직접 해결하는 걸 먼저 시도해', label: 'Independent 독립형', val: 'I' } },
-  { axis: 'R', text: '내가 더 잘 발휘되는 환경은?', a: { text: '동료들과 아이디어를 주고받으며 시너지가 날 때', label: 'Team 협력형', val: 'T' }, b: { text: '방해 없이 집중해서 내 페이스로 깊이 파고들 때', label: 'Independent 독립형', val: 'I' } },
+      const companies = {
+        sunjin: { name: "선진", url: "http://www.sj.co.kr" },
+        harim: { name: "하림", url: "https://harim.com/main/" },
+        ekape: { name: "축산물품질평가원", url: "https://www.ekape.or.kr" },
+        nonghyup: { name: "농협", url: "https://www.nonghyup.com" },
+        rda: { name: "농촌진흥청", url: "https://www.rda.go.kr" },
+      };
 
-  { axis: 'M', text: '축산 문제를 해결한다면 어떤 방식을 선호해?', a: { text: 'AI, 스마트팜, 대체단백질 등 새로운 기술을 적용하고 싶어', label: 'Innovative 혁신형', val: 'N' }, b: { text: '검증된 전통 방식을 개선·정교화하는 것이 더 안전해', label: 'Classic 전통형', val: 'C' } },
-  { axis: 'M', text: '새로운 아이디어가 나왔을 때 나는?', a: { text: '일단 실험해보고 싶어서 빠르게 시작하는 편', label: 'Innovative 혁신형', val: 'N' }, b: { text: '충분히 검토하고 타당성을 확인한 후 시도해', label: 'Classic 전통형', val: 'C' } },
-  { axis: 'M', text: '앞으로 축산업에서 중요한 것은?', a: { text: '기후변화, ESG, 디지털 전환 등 패러다임 변화에 선제 대응', label: 'Innovative 혁신형', val: 'N' }, b: { text: '전통 축산 지식과 기술을 계승·발전시키는 것', label: 'Classic 전통형', val: 'C' } },
-];
+      const typeData = {
+        FATN: {
+          name: "스마트 현장 개척자",
+          desc: "동물을 직접 이해하면서 팀과 함께 새로운 방식을 시도하는 혁신적 현장형. 스마트팜, 정밀축산, 현장 데이터 활용 분야에서 빛을 발해요.",
+          labs: [labs.breeding, labs.genomics],
+          career: [
+            "스마트팜 운영·관리자",
+            "동물생산 데이터 매니저",
+            "축산 ICT 현장 컨설턴트",
+          ],
+          companies: [companies.sunjin, companies.rda, companies.nonghyup],
+        },
+        FATC: {
+          name: "현장 수호 협력가",
+          desc: "검증된 축산 지식을 팀과 함께 현장에 적용하며 안정적인 생산을 이끄는 사람. 농장 관리, 협동조합, 현장 지도 분야에 잘 어울려요.",
+          labs: [labs.ruminant, labs.mono],
+          career: [
+            "농협·축협 영농지도사",
+            "현장 축산 관리자",
+            "생산성 향상 컨설턴트",
+          ],
+          companies: [companies.nonghyup, companies.sunjin, companies.rda],
+        },
+        FAIN: {
+          name: "현장 혁신 솔로러",
+          desc: "현장에서 직접 관찰하고 혼자 깊게 실험하며 새로운 가능성을 찾는 독립형 혁신가. 개별 농장 운영, 데이터 기반 사양관리, 창업형 진로에 강점이 있어요.",
+          labs: [labs.breeding, labs.genomics],
+          career: [
+            "축산 스타트업 창업자",
+            "스마트팜 1인 운영자",
+            "정밀축산 현장 분석가",
+          ],
+          companies: [companies.sunjin, companies.rda, companies.ekape],
+        },
+        FAIC: {
+          name: "전통 현장 장인",
+          desc: "동물과 현장을 꾸준히 살피며 기본기를 탄탄하게 쌓는 현장 장인형. 한우, 한돈, 낙농 등 생산 현장에서 신뢰받는 유형이에요.",
+          labs: [labs.repro, labs.ruminant],
+          career: [
+            "브랜드 한우·한돈 농장 운영",
+            "번식·사양관리 실무자",
+            "농촌진흥청 기술지도원",
+          ],
+          companies: [companies.nonghyup, companies.rda, companies.sunjin],
+        },
+        FPTN: {
+          name: "현장 산업 혁신팀장",
+          desc: "현장에서 직접 뛰면서 팀과 함께 축산물 생산·가공의 혁신을 이끄는 리더형. 제품 개발, 품질 개선, 공정 혁신 분야에 강해요.",
+          labs: [labs.processing, labs.mono],
+          career: [
+            "식품기업 현장 개발팀장",
+            "HACCP 혁신 관리자",
+            "축산물 브랜드 기획자",
+          ],
+          companies: [companies.harim, companies.sunjin, companies.ekape],
+        },
+        FPTC: {
+          name: "현장 품질 수호자",
+          desc: "검증된 방식으로 축산물 품질과 안전을 꼼꼼하게 지키는 사람. 식품 안전, 위생 관리, 품질 평가 분야에서 안정적인 강점이 있어요.",
+          labs: [labs.processing, labs.ruminant],
+          career: [
+            "HACCP 품질관리사",
+            "축산물 안전검사원",
+            "식품 위생·안전 관리자",
+          ],
+          companies: [companies.ekape, companies.harim, companies.sunjin],
+        },
+        FPIN: {
+          name: "현장 제품 개발 솔로러",
+          desc: "현장의 감각을 바탕으로 새로운 축산물 상품을 기획하고 실험하는 독립 혁신가. 푸드테크, 로컬 브랜드, 사료·가공 제품 개발에 관심이 높아요.",
+          labs: [labs.processing, labs.mono],
+          career: [
+            "푸드테크 스타트업 창업자",
+            "로컬 브랜드 제품 기획자",
+            "B2C 축산물 가공 사업자",
+          ],
+          companies: [companies.harim, companies.sunjin, companies.ekape],
+        },
+        FPIC: {
+          name: "현장 생산 실무가",
+          desc: "혼자서도 묵묵히 현장 생산·가공 품질을 지키는 실무 전문가. 도축, 유가공, 식육 포장처리, 사료 생산 분야에서 믿을 수 있는 유형이에요.",
+          labs: [labs.processing, labs.ruminant],
+          career: [
+            "도축·가공 현장 실무자",
+            "유가공 생산 관리자",
+            "식육 포장처리업 운영",
+          ],
+          companies: [companies.harim, companies.ekape, companies.sunjin],
+        },
+        RATN: {
+          name: "연구실 혁신 협력가",
+          desc: "팀 연구로 새로운 동물생명과학 발견을 이끄는 혁신 연구자. 유전체, 번식생리, 정밀축산 연구에서 강점을 발휘해요.",
+          labs: [labs.genomics, labs.repro],
+          career: [
+            "바이오 기업 연구원",
+            "정부출연연구소 연구원",
+            "유전체 분석 연구자",
+          ],
+          companies: [companies.rda, companies.sunjin, companies.ekape],
+        },
+        RATC: {
+          name: "연구실 생명 전통가",
+          desc: "탄탄한 팀 연구로 동물 생명현상의 기초를 다지는 사람. 번식, 생리, 영양 등 학문적 기반을 쌓는 연구 분야에 잘 맞아요.",
+          labs: [labs.repro, labs.ruminant],
+          career: [
+            "대학 연구원·교수",
+            "국립 농업연구기관 연구원",
+            "동물번식·영양 연구자",
+          ],
+          companies: [companies.rda, companies.nonghyup, companies.sunjin],
+        },
+        RAIN: {
+          name: "독립 생명과학 탐구가",
+          desc: "혼자 깊이 파고드는 동물생명 연구자. 독창적인 아이디어로 생리, 면역, 유전체 연구 주제를 탐구하는 데 강한 유형이에요.",
+          labs: [labs.genomics, labs.repro],
+          career: [
+            "대학원 연구자",
+            "해외 연구소 포닥",
+            "생명과학 데이터 분석가",
+          ],
+          companies: [companies.rda, companies.sunjin, companies.ekape],
+        },
+        RAIC: {
+          name: "연구 기반 생명 전문가",
+          desc: "동물생명과학을 신중하고 꼼꼼하게 연구하는 전문가형. 안정적인 공공 연구직, 번식·영양 연구, 품종 관리 분야에 잘 어울려요.",
+          labs: [labs.repro, labs.breeding],
+          career: [
+            "국공립 농업연구원",
+            "검역·품질 관련 연구원",
+            "농촌진흥청 연구직",
+          ],
+          companies: [companies.rda, companies.ekape, companies.nonghyup],
+        },
+        RPTN: {
+          name: "미래 축산 산업 개척자",
+          desc: "팀과 함께 연구를 통해 새로운 축산 산업을 만들어가는 리더. 대체단백질, 식품 가공, 사료 개발, 그린 바이오 분야에 딱 맞아요.",
+          labs: [labs.processing, labs.genomics],
+          career: [
+            "대체단백질 R&D 연구원",
+            "푸드테크 기업 연구팀",
+            "그린 바이오 스타트업 공동창업",
+          ],
+          companies: [companies.harim, companies.sunjin, companies.rda],
+        },
+        RPTC: {
+          name: "축산 산업 기초 연구자",
+          desc: "팀 연구로 축산 산업의 기반을 탄탄히 쌓는 사람. 사료·영양, 식품 안전, 축산물 품질 연구에서 꼭 필요한 역할이에요.",
+          labs: [labs.ruminant, labs.processing],
+          career: [
+            "사료 회사 연구소",
+            "식품안전·품질 연구원",
+            "농식품 정책 연구원",
+          ],
+          companies: [companies.sunjin, companies.ekape, companies.harim],
+        },
+        RPIN: {
+          name: "혁신 제품 연구 소규모 창업가",
+          desc: "혼자서도 연구로 새로운 축산 제품을 개발하는 독립 혁신 연구자. 사료 소재, 기능성 축산식품, 기술 이전형 진로에 강해요.",
+          labs: [labs.processing, labs.mono],
+          career: [
+            "1인 바이오 스타트업 창업",
+            "기술 이전 컨설턴트",
+            "식품 기업 프리랜서 연구원",
+          ],
+          companies: [companies.harim, companies.sunjin, companies.rda],
+        },
+        RPIC: {
+          name: "산업 기반 묵묵한 연구자",
+          desc: "혼자서도 묵묵히 전통 축산 산업을 뒷받침하는 연구를 하는 사람. 공공기관 연구직, 품질 인증, 사료·가공 연구에 잘 어울려요.",
+          labs: [labs.ruminant, labs.processing],
+          career: [
+            "국립 식품·축산 연구기관 연구원",
+            "축산물품질평가원 실무·연구직",
+            "사료·식품 품질 인증 담당자",
+          ],
+          companies: [companies.ekape, companies.sunjin, companies.harim],
+        },
+      };
 
-const labs = {
-  repro: { name: '동물번식생리학실험실', url: 'https://animal.pusan.ac.kr/animal/3240/subview.do?enc=Zm5jdDF8QEB8JTJGcHJvZmwlMkZhbmltYWwlMkY0OSUyRjU2OTklMkZ2aWV3LmRvJTNGcGFnZSUzRDElMjZmaW5kVHlwZSUzRCUyNmZpbmRXb3JkJTNEJTI2' },
-  ruminant: { name: '반추동물영양학실험실', url: 'https://ruminant.pusan.ac.kr/ruminant/index.do' },
-  processing: { name: '축산가공실험실', url: 'https://animal.pusan.ac.kr/animal/3240/subview.do?enc=Zm5jdDF8QEB8JTJGcHJvZmwlMkZhbmltYWwlMkY0OSUyRjU2OTglMkZ2aWV3LmRvJTNGcGFnZSUzRDElMjZmaW5kVHlwZSUzRCUyNmZpbmRXb3JkJTNEJTI2' },
-  breeding: { name: '동물육종학실험실', url: 'https://animal.pusan.ac.kr/animal/3240/subview.do?enc=Zm5jdDF8QEB8JTJGcHJvZmwlMkZhbmltYWwlMkY0OSUyRjU3MDAlMkZ2aWV3LmRvJTNGcGFnZSUzRDElMjZmaW5kVHlwZSUzRCUyNmZpbmRXb3JkJTNEJTI2' },
-  mono: { name: '단위동물영양학실험실', url: 'https://animal.pusan.ac.kr/animal/3240/subview.do?enc=Zm5jdDF8QEB8JTJGcHJvZmwlMkZhbmltYWwlMkY0OSUyRjcyNjElMkZ2aWV3LmRvJTNGcGFnZSUzRDElMjZmaW5kVHlwZSUzRCUyNmZpbmRXb3JkJTNEJTI2' },
-  genomics: { name: '기능유전체학실험실', url: 'https://sites.google.com/view/fungelab/home?authuser=0' },
-};
+      let cur = 0;
+      let answers = {};
+      let isAnimating = false;
 
-const companies = {
-  sunjin: { name: '선진', url: 'http://www.sj.co.kr' },
-  harim: { name: '하림', url: 'https://harim.com/main/' },
-  ekape: { name: '축산물품질평가원', url: 'https://www.ekape.or.kr' },
-  nonghyup: { name: '농협', url: 'https://www.nonghyup.com' },
-  rda: { name: '농촌진흥청', url: 'https://www.rda.go.kr' },
-};
+      function showSection(id) {
+        document
+          .querySelectorAll(".section")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
 
-const typeData = {
-  FATN: { name: '스마트 현장 개척자', desc: '동물을 직접 이해하면서 팀과 함께 새로운 방식을 시도하는 혁신적 현장형. 스마트팜, 정밀축산, 현장 데이터 활용 분야에서 빛을 발해요.', labs: [labs.breeding, labs.genomics], career: ['스마트팜 운영·관리자', '동물생산 데이터 매니저', '축산 ICT 현장 컨설턴트'], companies: [companies.sunjin, companies.rda, companies.nonghyup] },
-  FATC: { name: '현장 수호 협력가', desc: '검증된 축산 지식을 팀과 함께 현장에 적용하며 안정적인 생산을 이끄는 사람. 농장 관리, 협동조합, 현장 지도 분야에 잘 어울려요.', labs: [labs.ruminant, labs.mono], career: ['농협·축협 영농지도사', '현장 축산 관리자', '생산성 향상 컨설턴트'], companies: [companies.nonghyup, companies.sunjin, companies.rda] },
-  FAIN: { name: '현장 혁신 솔로러', desc: '현장에서 직접 관찰하고 혼자 깊게 실험하며 새로운 가능성을 찾는 독립형 혁신가. 개별 농장 운영, 데이터 기반 사양관리, 창업형 진로에 강점이 있어요.', labs: [labs.breeding, labs.genomics], career: ['축산 스타트업 창업자', '스마트팜 1인 운영자', '정밀축산 현장 분석가'], companies: [companies.sunjin, companies.rda, companies.ekape] },
-  FAIC: { name: '전통 현장 장인', desc: '동물과 현장을 꾸준히 살피며 기본기를 탄탄하게 쌓는 현장 장인형. 한우, 한돈, 낙농 등 생산 현장에서 신뢰받는 유형이에요.', labs: [labs.repro, labs.ruminant], career: ['브랜드 한우·한돈 농장 운영', '번식·사양관리 실무자', '농촌진흥청 기술지도원'], companies: [companies.nonghyup, companies.rda, companies.sunjin] },
-  FPTN: { name: '현장 산업 혁신팀장', desc: '현장에서 직접 뛰면서 팀과 함께 축산물 생산·가공의 혁신을 이끄는 리더형. 제품 개발, 품질 개선, 공정 혁신 분야에 강해요.', labs: [labs.processing, labs.mono], career: ['식품기업 현장 개발팀장', 'HACCP 혁신 관리자', '축산물 브랜드 기획자'], companies: [companies.harim, companies.sunjin, companies.ekape] },
-  FPTC: { name: '현장 품질 수호자', desc: '검증된 방식으로 축산물 품질과 안전을 꼼꼼하게 지키는 사람. 식품 안전, 위생 관리, 품질 평가 분야에서 안정적인 강점이 있어요.', labs: [labs.processing, labs.ruminant], career: ['HACCP 품질관리사', '축산물 안전검사원', '식품 위생·안전 관리자'], companies: [companies.ekape, companies.harim, companies.sunjin] },
-  FPIN: { name: '현장 제품 개발 솔로러', desc: '현장의 감각을 바탕으로 새로운 축산물 상품을 기획하고 실험하는 독립 혁신가. 푸드테크, 로컬 브랜드, 사료·가공 제품 개발에 관심이 높아요.', labs: [labs.processing, labs.mono], career: ['푸드테크 스타트업 창업자', '로컬 브랜드 제품 기획자', 'B2C 축산물 가공 사업자'], companies: [companies.harim, companies.sunjin, companies.ekape] },
-  FPIC: { name: '현장 생산 실무가', desc: '혼자서도 묵묵히 현장 생산·가공 품질을 지키는 실무 전문가. 도축, 유가공, 식육 포장처리, 사료 생산 분야에서 믿을 수 있는 유형이에요.', labs: [labs.processing, labs.ruminant], career: ['도축·가공 현장 실무자', '유가공 생산 관리자', '식육 포장처리업 운영'], companies: [companies.harim, companies.ekape, companies.sunjin] },
-  RATN: { name: '연구실 혁신 협력가', desc: '팀 연구로 새로운 동물생명과학 발견을 이끄는 혁신 연구자. 유전체, 번식생리, 정밀축산 연구에서 강점을 발휘해요.', labs: [labs.genomics, labs.repro], career: ['바이오 기업 연구원', '정부출연연구소 연구원', '유전체 분석 연구자'], companies: [companies.rda, companies.sunjin, companies.ekape] },
-  RATC: { name: '연구실 생명 전통가', desc: '탄탄한 팀 연구로 동물 생명현상의 기초를 다지는 사람. 번식, 생리, 영양 등 학문적 기반을 쌓는 연구 분야에 잘 맞아요.', labs: [labs.repro, labs.ruminant], career: ['대학 연구원·교수', '국립 농업연구기관 연구원', '동물번식·영양 연구자'], companies: [companies.rda, companies.nonghyup, companies.sunjin] },
-  RAIN: { name: '독립 생명과학 탐구가', desc: '혼자 깊이 파고드는 동물생명 연구자. 독창적인 아이디어로 생리, 면역, 유전체 연구 주제를 탐구하는 데 강한 유형이에요.', labs: [labs.genomics, labs.repro], career: ['대학원 연구자', '해외 연구소 포닥', '생명과학 데이터 분석가'], companies: [companies.rda, companies.sunjin, companies.ekape] },
-  RAIC: { name: '연구 기반 생명 전문가', desc: '동물생명과학을 신중하고 꼼꼼하게 연구하는 전문가형. 안정적인 공공 연구직, 번식·영양 연구, 품종 관리 분야에 잘 어울려요.', labs: [labs.repro, labs.breeding], career: ['국공립 농업연구원', '검역·품질 관련 연구원', '농촌진흥청 연구직'], companies: [companies.rda, companies.ekape, companies.nonghyup] },
-  RPTN: { name: '미래 축산 산업 개척자', desc: '팀과 함께 연구를 통해 새로운 축산 산업을 만들어가는 리더. 대체단백질, 식품 가공, 사료 개발, 그린 바이오 분야에 딱 맞아요.', labs: [labs.processing, labs.genomics], career: ['대체단백질 R&D 연구원', '푸드테크 기업 연구팀', '그린 바이오 스타트업 공동창업'], companies: [companies.harim, companies.sunjin, companies.rda] },
-  RPTC: { name: '축산 산업 기초 연구자', desc: '팀 연구로 축산 산업의 기반을 탄탄히 쌓는 사람. 사료·영양, 식품 안전, 축산물 품질 연구에서 꼭 필요한 역할이에요.', labs: [labs.ruminant, labs.processing], career: ['사료 회사 연구소', '식품안전·품질 연구원', '농식품 정책 연구원'], companies: [companies.sunjin, companies.ekape, companies.harim] },
-  RPIN: { name: '혁신 제품 연구 소규모 창업가', desc: '혼자서도 연구로 새로운 축산 제품을 개발하는 독립 혁신 연구자. 사료 소재, 기능성 축산식품, 기술 이전형 진로에 강해요.', labs: [labs.processing, labs.mono], career: ['1인 바이오 스타트업 창업', '기술 이전 컨설턴트', '식품 기업 프리랜서 연구원'], companies: [companies.harim, companies.sunjin, companies.rda] },
-  RPIC: { name: '산업 기반 묵묵한 연구자', desc: '혼자서도 묵묵히 전통 축산 산업을 뒷받침하는 연구를 하는 사람. 공공기관 연구직, 품질 인증, 사료·가공 연구에 잘 어울려요.', labs: [labs.ruminant, labs.processing], career: ['국립 식품·축산 연구기관 연구원', '축산물품질평가원 실무·연구직', '사료·식품 품질 인증 담당자'], companies: [companies.ekape, companies.sunjin, companies.harim] },
-};
+      function startTest() {
+        cur = 0;
+        answers = {};
+        showSection("test-section");
+        render();
+      }
 
-let cur = 0;
-let answers = {};
-let isAnimating = false;
+      function render() {
+        const q = questions[cur];
+        // 진행률은 "현재 문항 / 전체" 기준 — 마지막 문항 풀면 100%까지 가도록
+        const pct = Math.round(((cur + 1) / questions.length) * 100);
+        document.getElementById("q-counter").textContent =
+          cur + 1 + " / " + questions.length;
+        document.getElementById("q-pct").textContent = pct + "%";
+        document.getElementById("prog").style.width = pct + "%";
 
-function showSection(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+        const axisLabel = {
+          F: "F · 집중방식",
+          A: "A · 친화대상",
+          R: "R · 관계방식",
+          M: "M · 사고방식",
+        };
+        const prevSelected = answers[cur];
 
-function startTest() {
-  cur = 0;
-  answers = {};
-  showSection('test-section');
-  render();
-}
-
-function render() {
-  const q = questions[cur];
-  // 진행률은 "현재 문항 / 전체" 기준 — 마지막 문항 풀면 100%까지 가도록
-  const pct = Math.round(((cur + 1) / questions.length) * 100);
-  document.getElementById('q-counter').textContent = (cur + 1) + ' / ' + questions.length;
-  document.getElementById('q-pct').textContent = pct + '%';
-  document.getElementById('prog').style.width = pct + '%';
-
-  const axisLabel = { F: 'F · 집중방식', A: 'A · 친화대상', R: 'R · 관계방식', M: 'M · 사고방식' };
-  const prevSelected = answers[cur];
-
-  document.getElementById('q-area').innerHTML = `
+        document.getElementById("q-area").innerHTML = `
     <div class="q-card">
       <div class="q-axis">${axisLabel[q.axis]}</div>
       <div class="q-text">${q.text}</div>
       <div class="q-options">
-        <div class="q-opt${prevSelected === 'a' ? ' previously-selected' : ''}" data-opt="a" onclick="select('a')">
+        <div class="q-opt${prevSelected === "a" ? " previously-selected" : ""}" data-opt="a" onclick="select('a')">
           <div class="opt-letter">A</div>
           <div class="opt-body">
             <div class="opt-text">${q.a.text}</div>
           </div>
           <div class="opt-arrow">→</div>
         </div>
-        <div class="q-opt${prevSelected === 'b' ? ' previously-selected' : ''}" data-opt="b" onclick="select('b')">
+        <div class="q-opt${prevSelected === "b" ? " previously-selected" : ""}" data-opt="b" onclick="select('b')">
           <div class="opt-letter">B</div>
           <div class="opt-body">
             <div class="opt-text">${q.b.text}</div>
@@ -815,185 +1491,231 @@ function render() {
       </div>
     </div>`;
 
-  document.getElementById('btn-prev').disabled = cur === 0;
-}
+        document.getElementById("btn-prev").disabled = cur === 0;
+      }
 
-function select(opt) {
-  if (isAnimating) return;
-  isAnimating = true;
-  answers[cur] = opt;
+      function select(opt) {
+        if (isAnimating) return;
+        isAnimating = true;
+        answers[cur] = opt;
 
-  const opts = document.querySelectorAll('.q-opt');
-  opts.forEach(el => {
-    el.classList.remove('previously-selected');
-    if (el.dataset.opt === opt) {
-      el.classList.add('selecting');
-    } else {
-      el.classList.add('fading');
-    }
-    el.style.pointerEvents = 'none';
-  });
+        const opts = document.querySelectorAll(".q-opt");
+        opts.forEach((el) => {
+          el.classList.remove("previously-selected");
+          if (el.dataset.opt === opt) {
+            el.classList.add("selecting");
+          } else {
+            el.classList.add("fading");
+          }
+          el.style.pointerEvents = "none";
+        });
 
-  setTimeout(() => {
-    isAnimating = false;
-    if (cur < questions.length - 1) {
-      cur++;
-      render();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      showResult();
-    }
-  }, 500);
-}
+        setTimeout(() => {
+          isAnimating = false;
+          if (cur < questions.length - 1) {
+            cur++;
+            render();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } else {
+            showResult();
+          }
+        }, 500);
+      }
 
-function prev() {
-  if (isAnimating) return;
-  if (cur > 0) {
-    cur--;
-    render();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
+      function prev() {
+        if (isAnimating) return;
+        if (cur > 0) {
+          cur--;
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
 
-function renderLinks(items) {
-  return items.map(item => `
+      function renderLinks(items) {
+        return items
+          .map(
+            (item) => `
     <a class="rec-link" href="${item.url}" target="_blank" rel="noopener noreferrer">
       <span>${item.name}</span><span aria-hidden="true">↗</span>
-    </a>`).join('');
-}
+    </a>`,
+          )
+          .join("");
+      }
 
-function fireConfetti() {
-  if (!window.confetti) return;
+      function fireConfetti() {
+        if (!window.confetti) return;
 
-  const defaults = {
-    particleCount: 70,
-    spread: 58,
-    startVelocity: 34,
-    ticks: 150,
-    scalar: 0.9,
-    colors: ['#1D9E75', '#0F6E56', '#F2B84B', '#E8893D', '#ffffff'],
-  };
+        const defaults = {
+          particleCount: 70,
+          spread: 58,
+          startVelocity: 34,
+          ticks: 150,
+          scalar: 0.9,
+          colors: ["#1D9E75", "#0F6E56", "#F2B84B", "#E8893D", "#ffffff"],
+        };
 
-  window.confetti({ ...defaults, origin: { x: 0.25, y: 0.22 }, angle: 60 });
-  window.confetti({ ...defaults, origin: { x: 0.75, y: 0.22 }, angle: 120 });
-}
+        window.confetti({
+          ...defaults,
+          origin: { x: 0.25, y: 0.22 },
+          angle: 60,
+        });
+        window.confetti({
+          ...defaults,
+          origin: { x: 0.75, y: 0.22 },
+          angle: 120,
+        });
+      }
 
-function preloadImage(src) {
-  return new Promise(resolve => {
-    const img = new Image();
-    img.onload = () => resolve(true);
-    img.onerror = () => resolve(false);
-    img.src = src;
-  });
-}
+      function preloadImage(src) {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(true);
+          img.onerror = () => resolve(false);
+          img.src = src;
+        });
+      }
 
-async function showResult() {
-  const scores = { F: 0, R: 0, A: 0, P: 0, T: 0, I: 0, N: 0, C: 0 };
-  questions.forEach((q, i) => {
-    const opt = answers[i];
-    const val = opt === 'a' ? q.a.val : q.b.val;
-    scores[val]++;
-  });
+      async function showResult() {
+        const scores = { F: 0, R: 0, A: 0, P: 0, T: 0, I: 0, N: 0, C: 0 };
+        questions.forEach((q, i) => {
+          const opt = answers[i];
+          const val = opt === "a" ? q.a.val : q.b.val;
+          scores[val]++;
+        });
 
-  const fScore = scores.F; const rScore = scores.R;
-  const aScore = scores.A; const pScore = scores.P;
-  const tScore = scores.T; const iScore = scores.I;
-  const nScore = scores.N; const cScore = scores.C;
+        const fScore = scores.F;
+        const rScore = scores.R;
+        const aScore = scores.A;
+        const pScore = scores.P;
+        const tScore = scores.T;
+        const iScore = scores.I;
+        const nScore = scores.N;
+        const cScore = scores.C;
 
-  const f = fScore >= rScore ? 'F' : 'R';
-  const a = aScore >= pScore ? 'A' : 'P';
-  const r = tScore >= iScore ? 'T' : 'I';
-  const m = nScore >= cScore ? 'N' : 'C';
-  const typeKey = f + a + r + m;
-  const type = typeData[typeKey];
-  const characterSrc = `characters/${typeKey}.webp`;
+        const f = fScore >= rScore ? "F" : "R";
+        const a = aScore >= pScore ? "A" : "P";
+        const r = tScore >= iScore ? "T" : "I";
+        const m = nScore >= cScore ? "N" : "C";
+        const typeKey = f + a + r + m;
+        const type = typeData[typeKey];
+        const characterSrc = `characters/${typeKey}.webp`;
 
-  document.getElementById('res-type').textContent = typeKey;
-  document.getElementById('res-character').alt = type.name + ' 캐릭터';
-  document.getElementById('res-name').textContent = type.name;
-  document.getElementById('res-desc').textContent = type.desc;
+        document.getElementById("res-type").textContent = typeKey;
+        document.getElementById("res-character").alt = type.name + " 캐릭터";
+        document.getElementById("res-name").textContent = type.name;
+        document.getElementById("res-desc").textContent = type.desc;
 
-  const axisInfo = [
-    { label: '집중방식', leftVal: fScore, rightVal: rScore, leftLabel: 'Field 현장형', rightLabel: 'Research 연구형' },
-    { label: '친화대상', leftVal: aScore, rightVal: pScore, leftLabel: 'Animal 생명형', rightLabel: 'Product 산업형' },
-    { label: '관계방식', leftVal: tScore, rightVal: iScore, leftLabel: 'Team 협력형', rightLabel: 'Independent 독립형' },
-    { label: '사고방식', leftVal: nScore, rightVal: cScore, leftLabel: 'Innovative 혁신형', rightLabel: 'Classic 전통형' },
-  ].map(ax => {
-    const total = ax.leftVal + ax.rightVal;
-    const leftPct = Math.round((ax.leftVal / total) * 100);
-    const rightPct = 100 - leftPct;
-    const activeSide = leftPct >= rightPct ? 'left' : 'right';
-    return { ...ax, leftPct, rightPct, activeSide };
-  });
+        const axisInfo = [
+          {
+            label: "집중방식",
+            leftVal: fScore,
+            rightVal: rScore,
+            leftLabel: "Field 현장형",
+            rightLabel: "Research 연구형",
+          },
+          {
+            label: "친화대상",
+            leftVal: aScore,
+            rightVal: pScore,
+            leftLabel: "Animal 생명형",
+            rightLabel: "Product 산업형",
+          },
+          {
+            label: "관계방식",
+            leftVal: tScore,
+            rightVal: iScore,
+            leftLabel: "Team 협력형",
+            rightLabel: "Independent 독립형",
+          },
+          {
+            label: "사고방식",
+            leftVal: nScore,
+            rightVal: cScore,
+            leftLabel: "Innovative 혁신형",
+            rightLabel: "Classic 전통형",
+          },
+        ].map((ax) => {
+          const total = ax.leftVal + ax.rightVal;
+          const leftPct = Math.round((ax.leftVal / total) * 100);
+          const rightPct = 100 - leftPct;
+          const activeSide = leftPct >= rightPct ? "left" : "right";
+          return { ...ax, leftPct, rightPct, activeSide };
+        });
 
-  document.getElementById('axis-bars').innerHTML = axisInfo.map(ax => `
+        document.getElementById("axis-bars").innerHTML = axisInfo
+          .map(
+            (ax) => `
     <div class="axis-result">
       <div class="axis-result-top">
         <div class="axis-result-label">${ax.label}</div>
       </div>
       <div class="axis-score-row">
-        <div class="axis-pct left${ax.activeSide === 'left' ? ' active' : ''}">${ax.leftPct}%</div>
+        <div class="axis-pct left${ax.activeSide === "left" ? " active" : ""}">${ax.leftPct}%</div>
         <div class="axis-bar-wrap">
-          <div class="axis-bar ${ax.activeSide}" style="width:${ax.activeSide === 'left' ? ax.leftPct : ax.rightPct}%"></div>
+          <div class="axis-bar ${ax.activeSide}" style="width:${ax.activeSide === "left" ? ax.leftPct : ax.rightPct}%"></div>
         </div>
-        <div class="axis-pct right${ax.activeSide === 'right' ? ' active' : ''}">${ax.rightPct}%</div>
+        <div class="axis-pct right${ax.activeSide === "right" ? " active" : ""}">${ax.rightPct}%</div>
       </div>
       <div class="axis-label-row">
-        <div class="axis-side-label left${ax.activeSide === 'left' ? ' active' : ''}">${ax.leftLabel}</div>
-        <div class="axis-side-label right${ax.activeSide === 'right' ? ' active' : ''}">${ax.rightLabel}</div>
+        <div class="axis-side-label left${ax.activeSide === "left" ? " active" : ""}">${ax.leftLabel}</div>
+        <div class="axis-side-label right${ax.activeSide === "right" ? " active" : ""}">${ax.rightLabel}</div>
       </div>
-    </div>`).join('');
+    </div>`,
+          )
+          .join("");
 
-  document.getElementById('rec-area').innerHTML = `
+        document.getElementById("rec-area").innerHTML = `
     <div class="rec-card">
       <div class="rec-title">🔬 추천 랩실</div>
       <div class="rec-item">${renderLinks(type.labs)}</div>
     </div>
     <div class="rec-card">
       <div class="rec-title">💼 추천 진로</div>
-      <div class="rec-item">${type.career.map(c => `<span class="rec-tag">${c}</span>`).join('')}</div>
+      <div class="rec-item">${type.career.map((c) => `<span class="rec-tag">${c}</span>`).join("")}</div>
     </div>
     <div class="rec-card">
       <div class="rec-title">🏢 추천 기업·기관</div>
       <div class="rec-item">${renderLinks(type.companies)}</div>
     </div>`;
 
-  await preloadImage(characterSrc);
-  document.getElementById('res-character').src = characterSrc;
-  showSection('result-section');
-  setTimeout(fireConfetti, 180);
-}
+        await preloadImage(characterSrc);
+        document.getElementById("res-character").src = characterSrc;
+        showSection("result-section");
+        setTimeout(fireConfetti, 180);
+      }
 
-async function shareTest() {
-  const shareUrl = 'https://m.site.naver.com/288A7';
-  const shareData = {
-    title: '축산 FARM 유형 테스트',
-    text: '나는 어떤 농업인/연구자 스타일일까?',
-    url: shareUrl,
-  };
+      async function shareTest() {
+        const shareUrl = "https://m.site.naver.com/288A7";
+        const shareData = {
+          title: "축산 FARM 유형 테스트",
+          text: "나는 어떤 축산인/연구자 스타일일까?",
+          url: shareUrl,
+        };
 
-  if (navigator.share) {
-    try {
-      await navigator.share(shareData);
-      return;
-    } catch (err) {
-      if (err && err.name === 'AbortError') return;
-    }
-  }
+        if (navigator.share) {
+          try {
+            await navigator.share(shareData);
+            return;
+          } catch (err) {
+            if (err && err.name === "AbortError") return;
+          }
+        }
 
-  if (navigator.clipboard && window.isSecureContext) {
-    await navigator.clipboard.writeText(shareUrl);
-    alert('공유 링크가 복사됐어요.');
-    return;
-  }
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(shareUrl);
+          alert("공유 링크가 복사됐어요.");
+          return;
+        }
 
-  window.prompt('공유 링크를 복사해주세요.', shareUrl);
-}
+        window.prompt("공유 링크를 복사해주세요.", shareUrl);
+      }
 
-function restart() {
-  cur = 0; answers = {}; isAnimating = false;
-  showSection('landing-section');
-}
-</script>
-</body>
+      function restart() {
+        cur = 0;
+        answers = {};
+        isAnimating = false;
+        showSection("landing-section");
+      }
+    </script>
+  </body>
 </html>
